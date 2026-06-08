@@ -286,14 +286,14 @@
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    padding: 6px 14px;
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.1);
+    padding: 8px 16px;
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.25);
     border-radius: 10px;
     color: var(--text);
     text-decoration: none;
-    font-size: 0.78em;
-    font-weight: 500;
+    font-size: 0.82em;
+    font-weight: 600;
     transition: var(--transition);
     position: relative;
     overflow: hidden;
@@ -309,8 +309,8 @@
     pointer-events: none;
   }
   .resource-link:hover {
-    background: rgba(255,255,255,0.12);
-    border-color: rgba(255,255,255,0.2);
+    background: rgba(255,255,255,0.2);
+    border-color: rgba(255,255,255,0.35);
     transform: translateY(-2px);
   }
   .resource-link:hover::after {
@@ -321,14 +321,14 @@
     font-size: 0.9em;
     opacity: 0.8;
   }
-  .resource-link.link-vibe  { border-color: rgba(56,189,248,0.3); }
-  .resource-link.link-vibe:hover { background: rgba(56,189,248,0.15); }
-  .resource-link.link-agent { border-color: rgba(167,139,250,0.3); }
-  .resource-link.link-agent:hover { background: rgba(167,139,250,0.15); }
-  .resource-link.link-skill { border-color: rgba(52,211,153,0.3); }
-  .resource-link.link-skill:hover { background: rgba(52,211,153,0.15); }
-  .resource-link.link-mcp   { border-color: rgba(251,146,60,0.3); }
-  .resource-link.link-mcp:hover { background: rgba(251,146,60,0.15); }
+  .resource-link.link-vibe  { border-color: rgba(56,189,248,0.5); background: rgba(56,189,248,0.15); }
+  .resource-link.link-vibe:hover { background: rgba(56,189,248,0.25); }
+  .resource-link.link-agent { border-color: rgba(167,139,250,0.5); background: rgba(167,139,250,0.15); }
+  .resource-link.link-agent:hover { background: rgba(167,139,250,0.25); }
+  .resource-link.link-skill { border-color: rgba(52,211,153,0.5); background: rgba(52,211,153,0.15); }
+  .resource-link.link-skill:hover { background: rgba(52,211,153,0.25); }
+  .resource-link.link-mcp   { border-color: rgba(251,146,60,0.5); background: rgba(251,146,60,0.15); }
+  .resource-link.link-mcp:hover { background: rgba(251,146,60,0.25); }
 
   /* ============================================================
      Diagram Section
