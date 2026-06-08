@@ -262,6 +262,65 @@
   .tag-tools { background: rgba(250,204,21,0.12); color: var(--accent6); border: 1px solid rgba(250,204,21,0.25); }
 
   /* ============================================================
+     Resource Links (from resume project-links)
+     ============================================================ */
+  .resource-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 16px;
+    padding-top: 14px;
+    border-top: 1px dashed rgba(255,255,255,0.1);
+  }
+  .resource-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 10px;
+    color: var(--text);
+    text-decoration: none;
+    font-size: 0.78em;
+    font-weight: 500;
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+  }
+  .resource-link::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(105deg, transparent 30%, rgba(255,255,255,0.15) 50%, transparent 70%);
+    background-size: 200% 100%;
+    background-position: -200% center;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .resource-link:hover {
+    background: rgba(255,255,255,0.12);
+    border-color: rgba(255,255,255,0.2);
+    transform: translateY(-2px);
+  }
+  .resource-link:hover::after {
+    opacity: 1;
+    animation: shimmer 0.6s ease forwards;
+  }
+  .resource-link i {
+    font-size: 0.9em;
+    opacity: 0.8;
+  }
+  .resource-link.link-vibe  { border-color: rgba(56,189,248,0.3); }
+  .resource-link.link-vibe:hover { background: rgba(56,189,248,0.15); }
+  .resource-link.link-agent { border-color: rgba(167,139,250,0.3); }
+  .resource-link.link-agent:hover { background: rgba(167,139,250,0.15); }
+  .resource-link.link-skill { border-color: rgba(52,211,153,0.3); }
+  .resource-link.link-skill:hover { background: rgba(52,211,153,0.15); }
+  .resource-link.link-mcp   { border-color: rgba(251,146,60,0.3); }
+  .resource-link.link-mcp:hover { background: rgba(251,146,60,0.15); }
+
+  /* ============================================================
      Diagram Section
      ============================================================ */
   .diagram-section {
@@ -356,6 +415,13 @@
     <p>用<strong style="color:var(--text)">自然语言描述意图</strong>，AI 帮你写代码。你负责"调方向"，AI 负责"写代码和改 Bug"。</p>
     <p class="example">💡 例：你说"帮我写一个读取飞书文档的 Python 脚本"，AI 直接生成代码。</p>
     <span class="tag tag-vibe">理念 / 新范式</span>
+    <div class="resource-links">
+      <a href="https://github.com/BIT-ENGD/cs146s_cn" target="_blank" class="resource-link link-vibe">
+        <i class="fas fa-graduation-cap"></i>
+        <span>斯坦福 CS146S 公开课</span>
+        <i class="fas fa-external-link-alt" style="font-size:0.7em;opacity:0.5"></i>
+      </a>
+    </div>
   </div>
 
   <div class="glass-card card reveal-card" style="--card-from:#a78bfa;--card-to:#8b5cf6">
@@ -364,6 +430,13 @@
     <p>能<strong style="color:var(--text)">自主规划并执行任务</strong>的 AI。理解目标 → 拆解步骤 → 调用工具 → 检查修正，全程无需你一步步指挥。</p>
     <p class="example">💡 例：你说"帮我把 GitHub 上的代码部署到服务器"，Agent 自己：拉代码 → 检查依赖 → 打包 → 部署。</p>
     <span class="tag tag-agent">执行者</span>
+    <div class="resource-links">
+      <a href="https://github.com/datawhalechina/agentic-ai" target="_blank" class="resource-link link-agent">
+        <i class="fas fa-play-circle"></i>
+        <span>吴恩达 Agent 公开课</span>
+        <i class="fas fa-external-link-alt" style="font-size:0.7em;opacity:0.5"></i>
+      </a>
+    </div>
   </div>
 
   <div class="glass-card card reveal-card" style="--card-from:#34d399;--card-to:#10b981">
@@ -372,6 +445,18 @@
     <p>预封装的<strong style="color:var(--text)">"专业能力包"</strong>。装了 pptx 技能，Agent 就知道做 PPT 的最佳实践；用哪个装哪个。</p>
     <p class="example">💡 例：装了 <code style="background:rgba(52,211,153,0.15);padding:2px 6px;border-radius:4px">lark-doc</code> 技能后，Agent 就知道如何正确调用飞书文档 API 来创建和编辑文档。</p>
     <span class="tag tag-skill">专业知识</span>
+    <div class="resource-links">
+      <a href="https://github.com/anthropics/skills" target="_blank" class="resource-link link-skill">
+        <i class="fas fa-box"></i>
+        <span>Claude 官方技能库</span>
+        <i class="fas fa-external-link-alt" style="font-size:0.7em;opacity:0.5"></i>
+      </a>
+      <a href="https://github.com/VoltAgent/awesome-agent-skills" target="_blank" class="resource-link link-skill">
+        <i class="fas fa-star"></i>
+        <span>Awesome Agent Skills</span>
+        <i class="fas fa-external-link-alt" style="font-size:0.7em;opacity:0.5"></i>
+      </a>
+    </div>
   </div>
 
   <div class="glass-card card reveal-card" style="--card-from:#fb923c;--card-to:#f97316">
@@ -380,6 +465,13 @@
     <p>AI 与外部系统之间的<strong style="color:var(--text)">"标准接口协议"</strong>。就像 USB 接口，让 AI 能标准化地对接各种外部服务。</p>
     <p class="example">💡 例：通过飞书 MCP，AI 能直接帮你<strong style="color:var(--text)">发消息、读文档、建日程</strong>；通过 GitHub MCP，能<strong style="color:var(--text)">创建 PR、查看 Issue</strong>。</p>
     <span class="tag tag-mcp">连接协议</span>
+    <div class="resource-links">
+      <a href="https://github.com/punkpeye/awesome-mcp-servers/blob/main/README-zh.md" target="_blank" class="resource-link link-mcp">
+        <i class="fas fa-cubes"></i>
+        <span>Awesome MCP Servers</span>
+        <i class="fas fa-external-link-alt" style="font-size:0.7em;opacity:0.5"></i>
+      </a>
+    </div>
   </div>
 
   <div class="glass-card card reveal-card" style="--card-from:#f472b6;--card-to:#ec4899">
