@@ -82,40 +82,45 @@
     </div>
 
     <div class="code-block">
+      <div class="code-block-header">
+        <span class="filename"><i class="fas fa-file-alt"></i> SKILL.md 标准结构</span>
+      </div>
+      <div class="code-block-content">
 <span class="comment"># SKILL 文件标准结构</span>
 
-<span class="keyword">## 1. 元数据</span>
-name: skill-name
-version: 1.0.0
-description: 一句话描述这个技能
-author: 作者
+<span class="comment">## 1. 元数据</span>
+<span class="property">name</span>: skill-name
+<span class="property">version</span>: <span class="number">1.0.0</span>
+<span class="property">description</span>: 一句话描述这个技能
+<span class="property">author</span>: 作者
 
-<span class="keyword">## 2. 触发条件</span>
+<span class="comment">## 2. 触发条件</span>
 什么时候应该使用这个 Skill：
 - 当用户要求...时
 - 当检测到...时
 - 当任务类型为...时
 
-<span class="keyword">## 3. 前置条件</span>
+<span class="comment">## 3. 前置条件</span>
 使用这个 Skill 前需要满足：
 - 条件 1
 - 条件 2
 
-<span class="keyword">## 4. 操作流程</span>
+<span class="comment">## 4. 操作流程</span>
 步骤 1: [具体操作]
 步骤 2: [具体操作]
 步骤 3: [具体操作]
 
-<span class="keyword">## 5. 输入输出</span>
+<span class="comment">## 5. 输入输出</span>
 输入：[接受什么输入]
 输出：[产出什么结果]
 
-<span class="keyword">## 6. 质量标准</span>
+<span class="comment">## 6. 质量标准</span>
 - 标准 1
 - 标准 2
 
-<span class="keyword">## 7. 示例</span>
+<span class="comment">## 7. 示例</span>
 [具体的使用示例]
+      </div>
     </div>
   </div>
 
@@ -127,19 +132,23 @@ author: 作者
     </div>
 
     <div class="code-block">
+      <div class="code-block-header">
+        <span class="filename"><i class="fas fa-code"></i> code-review SKILL 示例</span>
+      </div>
+      <div class="code-block-content">
 <span class="comment"># code-review SKILL</span>
 
-<span class="keyword">## 元数据</span>
-name: code-review
-version: 1.0.0
-description: 对代码进行全面质量审查
+<span class="comment">## 元数据</span>
+<span class="property">name</span>: code-review
+<span class="property">version</span>: <span class="number">1.0.0</span>
+<span class="property">description</span>: 对代码进行全面质量审查
 
-<span class="keyword">## 触发条件</span>
+<span class="comment">## 触发条件</span>
 - 用户要求代码审查
 - 提交 PR 时自动触发
 - Gate Check 4 阶段
 
-<span class="keyword">## 操作流程</span>
+<span class="comment">## 操作流程</span>
 
 <span class="function">阶段 1：规范符合审查</span>
 1. 检查文件结构是否符合项目规范
@@ -153,20 +162,21 @@ description: 对代码进行全面质量审查
 3. 检查错误处理完整性
 4. 检查类型安全（TypeScript strict）
 
-<span class="keyword">## 输出格式</span>
+<span class="comment">## 输出格式</span>
 {
-  "pass": true/false,
-  "issues": [
+  <span class="string">"pass"</span>: <span class="keyword">true</span>/<span class="keyword">false</span>,
+  <span class="string">"issues"</span>: [
     {
-      "severity": "error/warning/info",
-      "file": "path/to/file.tsx",
-      "line": 42,
-      "message": "问题描述",
-      "suggestion": "修复建议"
+      <span class="string">"severity"</span>: <span class="string">"error/warning/info"</span>,
+      <span class="string">"file"</span>: <span class="string">"path/to/file.tsx"</span>,
+      <span class="string">"line"</span>: <span class="number">42</span>,
+      <span class="string">"message"</span>: <span class="string">"问题描述"</span>,
+      <span class="string">"suggestion"</span>: <span class="string">"修复建议"</span>
     }
   ],
-  "score": 85
+  <span class="string">"score"</span>: <span class="number">85</span>
 }
+      </div>
     </div>
   </div>
 
@@ -180,26 +190,36 @@ description: 对代码进行全面质量审查
     <h3>1. 单一职责</h3>
     <p>每个 SKILL 只做一件事，做到极致：</p>
     <div class="code-block">
+      <div class="code-block-header">
+        <span class="filename"><i class="fas fa-check"></i> 单一职责示例</span>
+      </div>
+      <div class="code-block-content">
 <span class="comment"># ✅ 好的设计</span>
-code-review: 代码审查
-test-generator: 测试生成
-doc-writer: 文档编写
+<span class="function">code-review</span>: 代码审查
+<span class="function">test-generator</span>: 测试生成
+<span class="function">doc-writer</span>: 文档编写
 
 <span class="comment"># ❌ 不好的设计</span>
-code-helper: 代码审查 + 测试生成 + 文档编写
+<span class="keyword">code-helper</span>: 代码审查 + 测试生成 + 文档编写
+      </div>
     </div>
 
     <h3>2. 可组合性</h3>
     <p>SKILL 之间可以组合使用：</p>
     <div class="code-block">
+      <div class="code-block-header">
+        <span class="filename"><i class="fas fa-project-diagram"></i> SKILL 组合示例</span>
+      </div>
+      <div class="code-block-content">
 <span class="comment"># 工作流可以组合多个 SKILL</span>
-workflow: feature-development
-  steps:
-    - skill: requirement-clarification
-    - skill: solution-design
-    - skill: code-development
-    - skill: code-review
-    - skill: test-generation
+<span class="property">workflow</span>: feature-development
+  <span class="property">steps</span>:
+    - <span class="string">skill</span>: requirement-clarification
+    - <span class="string">skill</span>: solution-design
+    - <span class="string">skill</span>: code-development
+    - <span class="string">skill</span>: code-review
+    - <span class="string">skill</span>: test-generation
+      </div>
     </div>
 
     <h3>3. 幂等性</h3>
@@ -218,33 +238,48 @@ workflow: feature-development
 
     <h3>方式 1：在 Agent 定义中引用</h3>
     <div class="code-block">
+      <div class="code-block-header">
+        <span class="filename"><i class="fas fa-robot"></i> Agent 配置文件</span>
+      </div>
+      <div class="code-block-content">
 <span class="comment"># Agent 配置文件</span>
-name: code-developer
-skills:
+<span class="property">name</span>: code-developer
+<span class="property">skills</span>:
   - code-development
   - template-audit
   - qa-review
+      </div>
     </div>
 
     <h3>方式 2：在对话中动态加载</h3>
     <div class="code-block">
+      <div class="code-block-header">
+        <span class="filename"><i class="fas fa-comment-dots"></i> 用户对话示例</span>
+      </div>
+      <div class="code-block-content">
 <span class="comment"># 用户对话</span>
-用户: 帮我审查这段代码
-Agent: 我将加载 code-review 技能来进行审查...
+<span class="keyword">用户</span>: 帮我审查这段代码
+<span class="function">Agent</span>: 我将加载 code-review 技能来进行审查...
 
 <span class="comment"># Agent 内部</span>
 1. 识别任务类型 → 代码审查
 2. 加载 code-review SKILL
 3. 按照 SKILL 定义的流程执行
 4. 输出标准化结果
+      </div>
     </div>
 
     <h3>方式 3：通过命令触发</h3>
     <div class="code-block">
+      <div class="code-block-header">
+        <span class="filename"><i class="fas fa-terminal"></i> 斜杠命令</span>
+      </div>
+      <div class="code-block-content">
 <span class="comment"># 使用斜杠命令</span>
-/review src/components/Button.tsx
+<span class="function">/review</span> src/components/Button.tsx
 
 <span class="comment"># Agent 自动加载 review SKILL</span>
+      </div>
     </div>
   </div>
 

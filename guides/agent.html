@@ -97,18 +97,23 @@
 
     <h3>示例：代码审查 Agent</h3>
     <div class="code-block">
-<span class="keyword">## 角色名称</span>
+      <div class="code-block-header">
+        <span class="filename"><i class="fas fa-robot"></i> code-reviewer.md</span>
+      </div>
+      <div class="code-block-content">
+<span class="comment">## 角色名称</span>
 高级代码审查专家
 
-<span class="keyword">## 核心职责</span>
+<span class="comment">## 核心职责</span>
 对提交的代码进行全面审查，确保代码质量、安全性和可维护性。
 
-<span class="keyword">## 审查维度</span>
+<span class="comment">## 审查维度</span>
 1. <span class="function">正确性</span>：代码逻辑是否正确
 2. <span class="function">安全性</span>：是否存在安全漏洞
 3. <span class="function">性能</span>：是否有性能问题
 4. <span class="function">可读性</span>：代码是否易于理解
 5. <span class="function">规范性</span>：是否遵循团队规范
+      </div>
     </div>
   </div>
 
@@ -126,12 +131,17 @@
       <p>这些是 Agent 绝对不能做的事情：</p>
     </div>
     <div class="code-block">
-<span class="keyword">## 绝对禁止</span>
-- **严禁**直接修改 `src/models/` 目录下的文件
-- **严禁**在未获得用户确认的情况下删除任何文件
-- **严禁**执行可能导致数据丢失的命令（如 `rm -rf`）
-- **严禁**将敏感信息（密码、密钥）输出到日志
-- **严禁**绕过质量门控（Gate Check）直接进入下一阶段
+      <div class="code-block-header">
+        <span class="filename"><i class="fas fa-ban"></i> 绝对禁止</span>
+      </div>
+      <div class="code-block-content">
+<span class="comment"># 绝对禁止</span>
+- <span class="keyword">**严禁**</span>直接修改 `src/models/` 目录下的文件
+- <span class="keyword">**严禁**</span>在未获得用户确认的情况下删除任何文件
+- <span class="keyword">**严禁**</span>执行可能导致数据丢失的命令（如 `rm -rf`）
+- <span class="keyword">**严禁**</span>将敏感信息（密码、密钥）输出到日志
+- <span class="keyword">**严禁**</span>绕过质量门控（Gate Check）直接进入下一阶段
+      </div>
     </div>
 
     <h3>必须遵守（MUST）</h3>
@@ -140,12 +150,17 @@
       <p>这些是 Agent 必须做到的事情：</p>
     </div>
     <div class="code-block">
-<span class="keyword">## 必须遵守</span>
-- **必须**在每次操作前备份相关文件
-- **必须**使用中文与用户沟通
-- **必须**在完成任务后生成操作日志
-- **必须**遇到不确定时主动询问用户
-- **必须**遵循现有的代码规范和架构模式
+      <div class="code-block-header">
+        <span class="filename"><i class="fas fa-check-circle"></i> 必须遵守</span>
+      </div>
+      <div class="code-block-content">
+<span class="comment"># 必须遵守</span>
+- <span class="function">**必须**</span>在每次操作前备份相关文件
+- <span class="function">**必须**</span>使用中文与用户沟通
+- <span class="function">**必须**</span>在完成任务后生成操作日志
+- <span class="function">**必须**</span>遇到不确定时主动询问用户
+- <span class="function">**必须**</span>遵循现有的代码规范和架构模式
+      </div>
     </div>
   </div>
 
@@ -159,36 +174,46 @@
 
     <h3>输入规范</h3>
     <div class="code-block">
-<span class="keyword">## 输入格式</span>
+      <div class="code-block-header">
+        <span class="filename"><i class="fas fa-sign-in-alt"></i> 输入格式规范</span>
+      </div>
+      <div class="code-block-content">
+<span class="comment"># 输入格式</span>
 每个任务必须包含：
-1. <span class="function">任务 ID</span>：唯一标识符（如 TASK-2024-001）
-2. <span class="function">任务描述</span>：清晰的目标说明
-3. <span class="function">上下文</span>：相关的背景信息
-4. <span class="function">约束条件</span>：必须遵守的限制
+1. <span class="property">任务 ID</span>：唯一标识符（如 TASK-2024-001）
+2. <span class="property">任务描述</span>：清晰的目标说明
+3. <span class="property">上下文</span>：相关的背景信息
+4. <span class="property">约束条件</span>：必须遵守的限制
 
-<span class="keyword">## 输入示例</span>
+<span class="comment"># 输入示例</span>
 {
-  "task_id": "TASK-2024-001",
-  "description": "重构用户认证模块，支持 OAuth2.0",
-  "context": "当前使用 JWT，需要兼容旧版本",
-  "constraints": ["不能修改数据库表结构", "必须向后兼容"]
+  <span class="string">"task_id"</span>: <span class="string">"TASK-2024-001"</span>,
+  <span class="string">"description"</span>: <span class="string">"重构用户认证模块，支持 OAuth2.0"</span>,
+  <span class="string">"context"</span>: <span class="string">"当前使用 JWT，需要兼容旧版本"</span>,
+  <span class="string">"constraints"</span>: [<span class="string">"不能修改数据库表结构"</span>, <span class="string">"必须向后兼容"</span>]
 }
+      </div>
     </div>
 
     <h3>输出规范</h3>
     <div class="code-block">
-<span class="keyword">## 输出格式</span>
+      <div class="code-block-header">
+        <span class="filename"><i class="fas fa-sign-out-alt"></i> 输出格式规范</span>
+      </div>
+      <div class="code-block-content">
+<span class="comment"># 输出格式</span>
 {
-  "task_id": "TASK-2024-001",
-  "status": "completed | failed | blocked",
-  "result": {
-    "summary": "任务完成摘要",
-    "changes": ["修改的文件列表"],
-    "artifacts": ["产出的文档或代码"]
+  <span class="string">"task_id"</span>: <span class="string">"TASK-2024-001"</span>,
+  <span class="string">"status"</span>: <span class="string">"completed | failed | blocked"</span>,
+  <span class="string">"result"</span>: {
+    <span class="string">"summary"</span>: <span class="string">"任务完成摘要"</span>,
+    <span class="string">"changes"</span>: [<span class="string">"修改的文件列表"</span>],
+    <span class="string">"artifacts"</span>: [<span class="string">"产出的文档或代码"</span>]
   },
-  "next_steps": ["建议的后续操作"],
-  "blockers": ["遇到的阻塞问题（如有）"]
+  <span class="string">"next_steps"</span>: [<span class="string">"建议的后续操作"</span>],
+  <span class="string">"blockers"</span>: [<span class="string">"遇到的阻塞问题（如有）"</span>]
 }
+      </div>
     </div>
   </div>
 
@@ -201,7 +226,11 @@
     <p>Agent 需要具备完善的错误处理能力：</p>
 
     <div class="code-block">
-<span class="keyword">## 错误处理流程</span>
+      <div class="code-block-header">
+        <span class="filename"><i class="fas fa-bug"></i> 错误处理流程</span>
+      </div>
+      <div class="code-block-content">
+<span class="comment"># 错误处理流程</span>
 1. <span class="function">捕获错误</span>：识别错误类型和严重程度
 2. <span class="function">分类处理</span>：
    - 可自愈错误 → 自动重试（最多 3 次）
@@ -209,20 +238,26 @@
    - 不可恢复错误 → 上报用户决策
 3. <span class="function">记录日志</span>：完整记录错误信息和处理过程
 4. <span class="function">通知用户</span>：重要错误必须通知用户
+      </div>
     </div>
 
     <h3>重试策略</h3>
     <div class="code-block">
+      <div class="code-block-header">
+        <span class="filename"><i class="fas fa-redo"></i> 重试配置</span>
+      </div>
+      <div class="code-block-content">
 <span class="comment"># 重试配置</span>
-max_retries: 3
-retry_delay: 2s
-exponential_backoff: true
+<span class="property">max_retries</span>: <span class="number">3</span>
+<span class="property">retry_delay</span>: <span class="number">2s</span>
+<span class="property">exponential_backoff</span>: <span class="keyword">true</span>
 
 <span class="comment"># 重试条件</span>
 - 网络超时 → 重试
 - API 限流 → 等待后重试
 - 语法错误 → 自动修复后重试
 - 逻辑错误 → 上报用户
+      </div>
     </div>
   </div>
 
@@ -235,7 +270,11 @@ exponential_backoff: true
     <p>每个阶段完成后必须通过质量检查才能进入下一阶段：</p>
 
     <div class="code-block">
-<span class="keyword">## Gate Check 配置</span>
+      <div class="code-block-header">
+        <span class="filename"><i class="fas fa-shield-alt"></i> Gate Check 配置</span>
+      </div>
+      <div class="code-block-content">
+<span class="comment"># Gate Check 配置</span>
 <span class="function">Gate 0</span>: 知识搜集完成
   - ✓ 后端代码已拉取
   - ✓ 前端图谱 ≥ 3 节点
@@ -250,6 +289,7 @@ exponential_backoff: true
   - ✓ TECHNICAL_SPEC.md 已生成
   - ✓ feature/*.md 已生成
   - ✓ Headless 架构合规
+      </div>
     </div>
   </div>
 

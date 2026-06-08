@@ -81,6 +81,10 @@
 
     <h3>1. 文件操作</h3>
     <div class="code-block">
+      <div class="code-block-header">
+        <span class="filename"><i class="fas fa-folder"></i> 文件操作命令</span>
+      </div>
+      <div class="code-block-content">
 <span class="comment"># 查看文件</span>
 ls -la                    <span class="comment"># 列出所有文件</span>
 cat file.txt              <span class="comment"># 查看文件内容</span>
@@ -93,10 +97,15 @@ mkdir -p dir/subdir       <span class="comment"># 创建目录</span>
 cp file.txt backup.txt    <span class="comment"># 复制文件</span>
 mv old.txt new.txt        <span class="comment"># 重命名</span>
 rm file.txt               <span class="comment"># 删除文件</span>
+      </div>
     </div>
 
     <h3>2. Git 操作</h3>
     <div class="code-block">
+      <div class="code-block-header">
+        <span class="filename"><i class="fab fa-git-alt"></i> Git 命令</span>
+      </div>
+      <div class="code-block-content">
 <span class="comment"># 查看状态</span>
 git status                <span class="comment"># 查看工作区状态</span>
 git diff                  <span class="comment"># 查看修改内容</span>
@@ -111,10 +120,15 @@ git push                  <span class="comment"># 推送到远程</span>
 git branch feature-x      <span class="comment"># 创建分支</span>
 git checkout feature-x    <span class="comment"># 切换分支</span>
 git merge feature-x       <span class="comment"># 合并分支</span>
+      </div>
     </div>
 
     <h3>3. 项目管理</h3>
     <div class="code-block">
+      <div class="code-block-header">
+        <span class="filename"><i class="fas fa-box"></i> 项目管理命令</span>
+      </div>
+      <div class="code-block-content">
 <span class="comment"># Node.js 项目</span>
 npm install               <span class="comment"># 安装依赖</span>
 npm run build             <span class="comment"># 构建项目</span>
@@ -125,6 +139,7 @@ npm run lint              <span class="comment"># 代码检查</span>
 pip install -r requirements.txt
 python -m pytest          <span class="comment"># 运行测试</span>
 black .                   <span class="comment"># 代码格式化</span>
+      </div>
     </div>
   </div>
 
@@ -156,12 +171,17 @@ black .                   <span class="comment"># 代码格式化</span>
       <p>以下命令需要特别小心，AI Agent 应该避免或谨慎使用：</p>
     </div>
     <div class="code-block">
+      <div class="code-block-header">
+        <span class="filename"><i class="fas fa-skull-crossbones"></i> 高危命令（Agent 应避免）</span>
+      </div>
+      <div class="code-block-content">
 <span class="comment"># 高危命令（Agent 应避免）</span>
 rm -rf /                   <span class="comment"># 删除根目录</span>
 chmod -R 777 /             <span class="comment"># 修改所有权限</span>
 git push --force           <span class="comment"># 强制推送</span>
 git reset --hard           <span class="comment"># 硬重置</span>
 DROP DATABASE              <span class="comment"># 删除数据库</span>
+      </div>
     </div>
   </div>
 
@@ -173,6 +193,10 @@ DROP DATABASE              <span class="comment"># 删除数据库</span>
     </div>
 
     <div class="code-block">
+      <div class="code-block-header">
+        <span class="filename"><i class="fas fa-magic"></i> auto-check.sh</span>
+      </div>
+      <div class="code-block-content">
 <span class="comment">#!/bin/bash</span>
 <span class="comment"># 自动化开发流程脚本</span>
 
@@ -201,6 +225,7 @@ echo <span class="string">"📦 构建项目..."</span>
 pnpm build
 
 echo <span class="string">"✅ 所有检查通过！"</span>
+      </div>
     </div>
   </div>
 
