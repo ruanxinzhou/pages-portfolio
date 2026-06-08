@@ -28,6 +28,33 @@
 
 <div class="guide-container">
 
+  <!-- 解决什么问题 -->
+  <div class="glass-card" style="--card-from:#ef4444;--card-to:#dc2626">
+    <div class="section-title">
+      <span class="icon" style="background:rgba(239,68,68,0.2);color:#ef4444"><i class="fas fa-exclamation-triangle"></i></span>
+      <span>解决什么问题？</span>
+    </div>
+
+    <h3>🚫 问题 1：上下文腐烂（Context Rot）</h3>
+    <p>当对话越来越长，AI 会逐渐"忘记"早期的上下文，开始产生不一致的回答。就像你和一个人聊了 3 小时，他开始混淆之前说过的话。</p>
+    <p><strong>表现</strong>：AI 忘记了你之前定义的变量名、重复问已经回答过的问题、生成的代码与之前的约定矛盾。</p>
+
+    <h3>🚫 问题 2：上下文窗口限制</h3>
+    <p>AI 的上下文窗口是有限的（比如 200K tokens）。当项目代码量超过这个限制，AI 无法同时"看到"所有代码，导致理解不完整。</p>
+    <p><strong>表现</strong>：AI 只能处理局部代码，无法理解全局架构；修改一个文件时破坏了另一个文件的逻辑。</p>
+
+    <h3>🚫 问题 3：需要人在回路中</h3>
+    <p>简单任务也需要人一步步指挥："先执行这个，再执行那个"。效率低下，且容易遗漏步骤。</p>
+
+    <h3>🚫 问题 4：任务复杂度爆炸</h3>
+    <p>大型任务（如"重构整个认证系统"）涉及多个文件、多个步骤，手动管理容易出错。</p>
+
+    <div class="tip-box">
+      <div class="tip-title">✅ Agent 的解决方案</div>
+      <p>Agent 通过<strong>自主规划、步骤拆解、工具调用、自我修正</strong>，将复杂任务自动化。它能管理自己的上下文，按步骤执行，并在出错时自动修复。</p>
+    </div>
+  </div>
+
   <!-- Agent 核心概念 -->
   <div class="glass-card" style="--card-from:#a78bfa;--card-to:#8b5cf6">
     <div class="section-title">
