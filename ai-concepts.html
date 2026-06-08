@@ -224,6 +224,8 @@
     margin-bottom: 10px;
     display: inline-block;
     transition: transform 0.3s ease;
+    position: relative;
+    z-index: 2;
   }
   .glass-card:hover .card-icon {
     transform: scale(1.1) rotate(-3deg);
@@ -233,11 +235,15 @@
     font-weight: 700;
     margin-bottom: 8px;
     color: var(--text);
+    position: relative;
+    z-index: 2;
   }
   .card p {
     font-size: 0.92em;
     color: var(--text-secondary);
     line-height: 1.7;
+    position: relative;
+    z-index: 2;
   }
   .card .example {
     margin-top: 8px;
@@ -253,6 +259,8 @@
     margin-top: 14px;
     font-weight: 600;
     letter-spacing: 0.3px;
+    position: relative;
+    z-index: 2;
   }
   .tag-vibe  { background: rgba(56,189,248,0.12); color: var(--accent); border: 1px solid rgba(56,189,248,0.25); }
   .tag-agent { background: rgba(167,139,250,0.12); color: var(--accent2); border: 1px solid rgba(167,139,250,0.25); }
@@ -271,6 +279,8 @@
     margin-top: 16px;
     padding-top: 14px;
     border-top: 1px dashed rgba(255,255,255,0.1);
+    position: relative;
+    z-index: 2;
   }
   .resource-link {
     display: inline-flex;
