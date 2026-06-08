@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CLI 设计指南 - AI 开发核心概念</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+<link rel="stylesheet" href="style.css">
+<style>
+  .header-content h1 { color: var(--accent5); }
+</style>
+</head>
+<body>
+
+<header class="guide-header">
+  <div class="header-content">
+    <a href="../ai-concepts.html" class="back-link">
+      <i class="fas fa-arrow-left"></i>
+      <span>返回概念图解</span>
+    </a>
+    <h1>⌨️ CLI 设计指南</h1>
+    <p class="subtitle">命令行交互 - AI Agent 与系统的沟通方式</p>
+  </div>
+</header>
+
+<div class="guide-container">
+
+  <!-- 什么是 CLI -->
+  <div class="glass-card" style="--card-from:#f472b6;--card-to:#ec4899">
+    <div class="section-title">
+      <span class="icon" style="background:rgba(244,114,182,0.2);color:var(--accent5)"><i class="fas fa-terminal"></i></span>
+      <span>什么是 CLI？</span>
+    </div>
+    <p>CLI（Command Line Interface）是<strong style="color:var(--text)">命令行界面</strong>，通过文字命令操作计算机系统。</p>
+    <p>在 AI Agent 场景中，CLI 是 Agent 与操作系统交互的主要方式：</p>
+    <ul>
+      <li><strong>执行命令</strong>：运行脚本、构建项目</li>
+      <li><strong>文件操作</strong>：创建、读取、修改文件</li>
+      <li><strong>系统管理</strong>：进程管理、服务启停</li>
+      <li><strong>版本控制</strong>：Git 操作</li>
+    </ul>
+
+    <div class="tip-box">
+      <div class="tip-title">💡 核心价值</div>
+      <p>CLI 让 AI 可以像人类开发者一样操作电脑，而且速度更快、不会犯错。</p>
+    </div>
+  </div>
+
+  <!-- 常用 CLI 命令 -->
+  <div class="glass-card" style="--card-from:#38bdf8;--card-to:#0ea5e9">
+    <div class="section-title">
+      <span class="icon" style="background:rgba(56,189,248,0.2);color:var(--accent)"><i class="fas fa-terminal"></i></span>
+      <span>Agent 常用 CLI 命令</span>
+    </div>
+
+    <h3>1. 文件操作</h3>
+    <div class="code-block">
+<span class="comment"># 查看文件</span>
+ls -la                    <span class="comment"># 列出所有文件</span>
+cat file.txt              <span class="comment"># 查看文件内容</span>
+head -n 20 file.txt       <span class="comment"># 查看前 20 行</span>
+tail -f log.txt           <span class="comment"># 实时查看日志</span>
+
+<span class="comment"># 创建/修改文件</span>
+touch newfile.txt         <span class="comment"># 创建空文件</span>
+mkdir -p dir/subdir       <span class="comment"># 创建目录</span>
+cp file.txt backup.txt    <span class="comment"># 复制文件</span>
+mv old.txt new.txt        <span class="comment"># 重命名</span>
+rm file.txt               <span class="comment"># 删除文件</span>
+    </div>
+
+    <h3>2. Git 操作</h3>
+    <div class="code-block">
+<span class="comment"># 查看状态</span>
+git status                <span class="comment"># 查看工作区状态</span>
+git diff                  <span class="comment"># 查看修改内容</span>
+git log --oneline -10     <span class="comment"># 查看最近 10 条提交</span>
+
+<span class="comment"># 提交代码</span>
+git add .                 <span class="comment"># 暂存所有修改</span>
+git commit -m "feat: ..."  <span class="comment"># 提交</span>
+git push                  <span class="comment"># 推送到远程</span>
+
+<span class="comment"># 分支操作</span>
+git branch feature-x      <span class="comment"># 创建分支</span>
+git checkout feature-x    <span class="comment"># 切换分支</span>
+git merge feature-x       <span class="comment"># 合并分支</span>
+    </div>
+
+    <h3>3. 项目管理</h3>
+    <div class="code-block">
+<span class="comment"># Node.js 项目</span>
+npm install               <span class="comment"># 安装依赖</span>
+npm run build             <span class="comment"># 构建项目</span>
+npm test                  <span class="comment"># 运行测试</span>
+npm run lint              <span class="comment"># 代码检查</span>
+
+<span class="comment"># Python 项目</span>
+pip install -r requirements.txt
+python -m pytest          <span class="comment"># 运行测试</span>
+black .                   <span class="comment"># 代码格式化</span>
+    </div>
+  </div>
+
+  <!-- CLI 设计原则 -->
+  <div class="glass-card" style="--card-from:#34d399;--card-to:#10b981">
+    <div class="section-title">
+      <span class="icon" style="background:rgba(52,211,153,0.2);color:var(--accent3)"><i class="fas fa-check-circle"></i></span>
+      <span>CLI 使用最佳实践</span>
+    </div>
+
+    <h3>✅ 安全操作</h3>
+    <ul>
+      <li><strong>操作前检查</strong>：执行删除前先确认文件存在</li>
+      <li><strong>使用 dry-run</strong>：支持预览模式的命令先预览</li>
+      <li><strong>备份重要文件</strong>：修改前先备份</li>
+      <li><strong>避免 root 权限</strong>：除非必要，不使用 sudo</li>
+    </ul>
+
+    <h3>✅ 错误处理</h3>
+    <ul>
+      <li><strong>检查退出码</strong>：每个命令后检查 <code>$?</code></li>
+      <li><strong>捕获错误输出</strong>：使用 <code>2>&1</code> 合并输出</li>
+      <li><strong>设置超时</strong>：长命令设置超时时间</li>
+      <li><strong>记录日志</strong>：重要操作记录到日志文件</li>
+    </ul>
+
+    <div class="warn-box">
+      <div class="warn-title">⚠️ 危险命令</div>
+      <p>以下命令需要特别小心，AI Agent 应该避免或谨慎使用：</p>
+    </div>
+    <div class="code-block">
+<span class="comment"># 高危命令（Agent 应避免）</span>
+rm -rf /                   <span class="comment"># 删除根目录</span>
+chmod -R 777 /             <span class="comment"># 修改所有权限</span>
+git push --force           <span class="comment"># 强制推送</span>
+git reset --hard           <span class="comment"># 硬重置</span>
+DROP DATABASE              <span class="comment"># 删除数据库</span>
+    </div>
+  </div>
+
+  <!-- 自动化脚本 -->
+  <div class="glass-card" style="--card-from:#fb923c;--card-to:#f97316">
+    <div class="section-title">
+      <span class="icon" style="background:rgba(251,146,60,0.2);color:var(--accent4)"><i class="fas fa-magic"></i></span>
+      <span>Agent 自动化脚本示例</span>
+    </div>
+
+    <div class="code-block">
+<span class="comment">#!/bin/bash</span>
+<span class="comment"># 自动化开发流程脚本</span>
+
+<span class="keyword">set -e</span>  <span class="comment"># 遇到错误立即退出</span>
+
+echo <span class="string">"🚀 开始自动化流程..."</span>
+
+<span class="comment"># 1. 检查代码状态</span>
+echo <span class="string">"📋 检查代码状态..."</span>
+git status
+
+<span class="comment"># 2. 运行类型检查</span>
+echo <span class="string">"🔍 运行类型检查..."</span>
+pnpm typecheck
+
+<span class="comment"># 3. 运行 lint</span>
+echo <span class="string">"🧹 运行代码检查..."</span>
+pnpm lint
+
+<span class="comment"># 4. 运行测试</span>
+echo <span class="string">"🧪 运行测试..."</span>
+pnpm test
+
+<span class="comment"># 5. 构建项目</span>
+echo <span class="string">"📦 构建项目..."</span>
+pnpm build
+
+echo <span class="string">"✅ 所有检查通过！"</span>
+    </div>
+  </div>
+
+  <!-- 参考资源 -->
+  <div class="glass-card" style="--card-from:#a78bfa;--card-to:#8b5cf6">
+    <div class="section-title">
+      <span class="icon" style="background:rgba(167,139,250,0.2);color:var(--accent2)"><i class="fas fa-book"></i></span>
+      <span>参考资源</span>
+    </div>
+
+    <a href="https://docs.anthropic.com/en/docs/claude-code/cli-usage" target="_blank" class="resource-link">
+      <i class="fas fa-book"></i>
+      <span>Claude Code CLI 使用文档</span>
+      <i class="fas fa-external-link-alt" style="font-size:0.7em;opacity:0.5"></i>
+    </a>
+
+    <a href="https://linuxcommand.org/" target="_blank" class="resource-link">
+      <i class="fas fa-terminal"></i>
+      <span>Linux 命令行教程</span>
+      <i class="fas fa-external-link-alt" style="font-size:0.7em;opacity:0.5"></i>
+    </a>
+  </div>
+
+</div>
+
+<footer class="guide-footer">
+  CLI 设计指南 · AI 开发核心概念系列
+</footer>
+
+</body>
+</html>

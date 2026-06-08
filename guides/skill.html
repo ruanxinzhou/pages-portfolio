@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SKILL 设计指南 - AI 开发核心概念</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+<link rel="stylesheet" href="style.css">
+<style>
+  .header-content h1 { color: var(--accent3); }
+</style>
+</head>
+<body>
+
+<header class="guide-header">
+  <div class="header-content">
+    <a href="../ai-concepts.html" class="back-link">
+      <i class="fas fa-arrow-left"></i>
+      <span>返回概念图解</span>
+    </a>
+    <h1>🧩 SKILL 设计指南</h1>
+    <p class="subtitle">设计可复用的 AI 技能包，赋予 Agent 专业能力</p>
+  </div>
+</header>
+
+<div class="guide-container">
+
+  <!-- 什么是 SKILL -->
+  <div class="glass-card" style="--card-from:#34d399;--card-to:#10b981">
+    <div class="section-title">
+      <span class="icon" style="background:rgba(52,211,153,0.2);color:var(--accent3)"><i class="fas fa-puzzle-piece"></i></span>
+      <span>什么是 SKILL？</span>
+    </div>
+    <p>SKILL 是预封装的<strong style="color:var(--text)">"专业能力包"</strong>，它告诉 Agent：</p>
+    <ul>
+      <li><strong>做什么</strong>：具体的任务目标</li>
+      <li><strong>怎么做</strong>：操作步骤和最佳实践</li>
+      <li><strong>用什么</strong>：需要的工具和资源</li>
+      <li><strong>产出什么</strong>：预期的输出格式</li>
+    </ul>
+
+    <div class="tip-box">
+      <div class="tip-title">💡 类比</div>
+      <p>如果 Agent 是"员工"，SKILL 就是"岗位培训手册"。员工可以换，但手册提供了标准化的操作规范。</p>
+    </div>
+  </div>
+
+  <!-- SKILL 结构 -->
+  <div class="glass-card" style="--card-from:#a78bfa;--card-to:#8b5cf6">
+    <div class="section-title">
+      <span class="icon" style="background:rgba(167,139,250,0.2);color:var(--accent2)"><i class="fas fa-file-alt"></i></span>
+      <span>SKILL 标准结构</span>
+    </div>
+
+    <div class="code-block">
+<span class="comment"># SKILL 文件标准结构</span>
+
+<span class="keyword">## 1. 元数据</span>
+name: skill-name
+version: 1.0.0
+description: 一句话描述这个技能
+author: 作者
+
+<span class="keyword">## 2. 触发条件</span>
+什么时候应该使用这个 Skill：
+- 当用户要求...时
+- 当检测到...时
+- 当任务类型为...时
+
+<span class="keyword">## 3. 前置条件</span>
+使用这个 Skill 前需要满足：
+- 条件 1
+- 条件 2
+
+<span class="keyword">## 4. 操作流程</span>
+步骤 1: [具体操作]
+步骤 2: [具体操作]
+步骤 3: [具体操作]
+
+<span class="keyword">## 5. 输入输出</span>
+输入：[接受什么输入]
+输出：[产出什么结果]
+
+<span class="keyword">## 6. 质量标准</span>
+- 标准 1
+- 标准 2
+
+<span class="keyword">## 7. 示例</span>
+[具体的使用示例]
+    </div>
+  </div>
+
+  <!-- 实际案例 -->
+  <div class="glass-card" style="--card-from:#38bdf8;--card-to:#0ea5e9">
+    <div class="section-title">
+      <span class="icon" style="background:rgba(56,189,248,0.2);color:var(--accent)"><i class="fas fa-code"></i></span>
+      <span>实际案例：代码审查 SKILL</span>
+    </div>
+
+    <div class="code-block">
+<span class="comment"># code-review SKILL</span>
+
+<span class="keyword">## 元数据</span>
+name: code-review
+version: 1.0.0
+description: 对代码进行全面质量审查
+
+<span class="keyword">## 触发条件</span>
+- 用户要求代码审查
+- 提交 PR 时自动触发
+- Gate Check 4 阶段
+
+<span class="keyword">## 操作流程</span>
+
+<span class="function">阶段 1：规范符合审查</span>
+1. 检查文件结构是否符合项目规范
+2. 检查命名是否遵循驼峰/下划线规范
+3. 检查是否使用了禁止的 API
+4. 检查内联样式（零容忍）
+
+<span class="function">阶段 2：代码质量审查</span>
+1. 检查函数复杂度（圈复杂度 < 10）
+2. 检查重复代码（DRY 原则）
+3. 检查错误处理完整性
+4. 检查类型安全（TypeScript strict）
+
+<span class="keyword">## 输出格式</span>
+{
+  "pass": true/false,
+  "issues": [
+    {
+      "severity": "error/warning/info",
+      "file": "path/to/file.tsx",
+      "line": 42,
+      "message": "问题描述",
+      "suggestion": "修复建议"
+    }
+  ],
+  "score": 85
+}
+    </div>
+  </div>
+
+  <!-- SKILL 设计原则 -->
+  <div class="glass-card" style="--card-from:#fb923c;--card-to:#f97316">
+    <div class="section-title">
+      <span class="icon" style="background:rgba(251,146,60,0.2);color:var(--accent4)"><i class="fas fa-lightbulb"></i></span>
+      <span>SKILL 设计原则</span>
+    </div>
+
+    <h3>1. 单一职责</h3>
+    <p>每个 SKILL 只做一件事，做到极致：</p>
+    <div class="code-block">
+<span class="comment"># ✅ 好的设计</span>
+code-review: 代码审查
+test-generator: 测试生成
+doc-writer: 文档编写
+
+<span class="comment"># ❌ 不好的设计</span>
+code-helper: 代码审查 + 测试生成 + 文档编写
+    </div>
+
+    <h3>2. 可组合性</h3>
+    <p>SKILL 之间可以组合使用：</p>
+    <div class="code-block">
+<span class="comment"># 工作流可以组合多个 SKILL</span>
+workflow: feature-development
+  steps:
+    - skill: requirement-clarification
+    - skill: solution-design
+    - skill: code-development
+    - skill: code-review
+    - skill: test-generation
+    </div>
+
+    <h3>3. 幂等性</h3>
+    <p>相同的输入应该产生相同的输出，可以安全地重复执行。</p>
+
+    <h3>4. 可测试性</h3>
+    <p>每个 SKILL 都应该有对应的测试用例。</p>
+  </div>
+
+  <!-- 调用方式 -->
+  <div class="glass-card" style="--card-from:#f472b6;--card-to:#ec4899">
+    <div class="section-title">
+      <span class="icon" style="background:rgba(244,114,182,0.2);color:var(--accent5)"><i class="fas fa-phone-alt"></i></span>
+      <span>SKILL 调用方式</span>
+    </div>
+
+    <h3>方式 1：在 Agent 定义中引用</h3>
+    <div class="code-block">
+<span class="comment"># Agent 配置文件</span>
+name: code-developer
+skills:
+  - code-development
+  - template-audit
+  - qa-review
+    </div>
+
+    <h3>方式 2：在对话中动态加载</h3>
+    <div class="code-block">
+<span class="comment"># 用户对话</span>
+用户: 帮我审查这段代码
+Agent: 我将加载 code-review 技能来进行审查...
+
+<span class="comment"># Agent 内部</span>
+1. 识别任务类型 → 代码审查
+2. 加载 code-review SKILL
+3. 按照 SKILL 定义的流程执行
+4. 输出标准化结果
+    </div>
+
+    <h3>方式 3：通过命令触发</h3>
+    <div class="code-block">
+<span class="comment"># 使用斜杠命令</span>
+/review src/components/Button.tsx
+
+<span class="comment"># Agent 自动加载 review SKILL</span>
+    </div>
+  </div>
+
+  <!-- Claude Code Skills -->
+  <div class="glass-card" style="--card-from:#06b6d4;--card-to:#0891b2">
+    <div class="section-title">
+      <span class="icon" style="background:rgba(6,182,212,0.2);color:#06b6d4"><i class="fas fa-box"></i></span>
+      <span>Claude Code 官方 SKILL</span>
+    </div>
+    <p>Anthropic 提供了一些官方的 SKILL 示例：</p>
+
+    <a href="https://github.com/anthropics/skills" target="_blank" class="resource-link">
+      <i class="fas fa-github"></i>
+      <span>Claude Code Skills 官方仓库</span>
+      <i class="fas fa-external-link-alt" style="font-size:0.7em;opacity:0.5"></i>
+    </a>
+
+    <h3>官方 SKILL 示例</h3>
+    <ul>
+      <li><strong>frontier-risk</strong>：识别高风险代码</li>
+      <li><strong>claude-api</strong>：使用 Anthropic API</li>
+      <li><strong>code-review</strong>：代码审查最佳实践</li>
+    </ul>
+
+    <div class="tip-box">
+      <div class="tip-title">💡 提示</div>
+      <p>官方 SKILL 是很好的学习参考，你可以基于它们创建适合自己项目的 SKILL。</p>
+    </div>
+  </div>
+
+</div>
+
+<footer class="guide-footer">
+  SKILL 设计指南 · AI 开发核心概念系列
+</footer>
+
+</body>
+</html>

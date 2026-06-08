@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agent 设计指南 - AI 开发核心概念</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+<link rel="stylesheet" href="style.css">
+<style>
+  .header-content h1 { color: var(--accent2); }
+</style>
+</head>
+<body>
+
+<header class="guide-header">
+  <div class="header-content">
+    <a href="../ai-concepts.html" class="back-link">
+      <i class="fas fa-arrow-left"></i>
+      <span>返回概念图解</span>
+    </a>
+    <h1>🤖 Agent 设计指南</h1>
+    <p class="subtitle">设计高质量 AI Agent 的标准原则与实践</p>
+  </div>
+</header>
+
+<div class="guide-container">
+
+  <!-- Agent 核心概念 -->
+  <div class="glass-card" style="--card-from:#a78bfa;--card-to:#8b5cf6">
+    <div class="section-title">
+      <span class="icon" style="background:rgba(167,139,250,0.2);color:var(--accent2)"><i class="fas fa-brain"></i></span>
+      <span>Agent 核心概念</span>
+    </div>
+    <p>Agent 是一个能<strong style="color:var(--text)">自主规划并执行任务</strong>的 AI 系统。它不仅仅是"问答机器"，而是能够：</p>
+    <ul>
+      <li><strong>理解目标</strong>：解析用户的高层意图</li>
+      <li><strong>拆解步骤</strong>：将复杂任务分解为可执行的子任务</li>
+      <li><strong>调用工具</strong>：使用外部工具完成具体操作</li>
+      <li><strong>检查修正</strong>：自我验证并修复错误</li>
+    </ul>
+  </div>
+
+  <!-- 角色定位 -->
+  <div class="glass-card" style="--card-from:#38bdf8;--card-to:#0ea5e9">
+    <div class="section-title">
+      <span class="icon" style="background:rgba(56,189,248,0.2);color:var(--accent)"><i class="fas fa-user-tag"></i></span>
+      <span>角色定位设计</span>
+    </div>
+    <p>每个 Agent 都应该有清晰的角色定义，就像团队中的岗位职责：</p>
+
+    <div class="code-block">
+<span class="comment"># Agent 角色定义模板</span>
+<span class="keyword">## 角色名称</span>
+你是一个 [具体角色]，负责 [核心职责]。
+
+<span class="keyword">## 核心能力</span>
+- 能力 1：[具体描述]
+- 能力 2：[具体描述]
+- 能力 3：[具体描述]
+
+<span class="keyword">## 工作方式</span>
+当你收到任务时，你会：
+1. [步骤 1]
+2. [步骤 2]
+3. [步骤 3]
+    </div>
+
+    <h3>示例：代码审查 Agent</h3>
+    <div class="code-block">
+<span class="keyword">## 角色名称</span>
+高级代码审查专家
+
+<span class="keyword">## 核心职责</span>
+对提交的代码进行全面审查，确保代码质量、安全性和可维护性。
+
+<span class="keyword">## 审查维度</span>
+1. <span class="function">正确性</span>：代码逻辑是否正确
+2. <span class="function">安全性</span>：是否存在安全漏洞
+3. <span class="function">性能</span>：是否有性能问题
+4. <span class="function">可读性</span>：代码是否易于理解
+5. <span class="function">规范性</span>：是否遵循团队规范
+    </div>
+  </div>
+
+  <!-- 边界定义 -->
+  <div class="glass-card" style="--card-from:#34d399;--card-to:#10b981">
+    <div class="section-title">
+      <span class="icon" style="background:rgba(52,211,153,0.2);color:var(--accent3)"><i class="fas fa-border-all"></i></span>
+      <span>边界与约束</span>
+    </div>
+    <p>明确的边界定义可以防止 Agent 越权或做出不当行为：</p>
+
+    <h3>绝对禁止（ABSOLUTELY FORBIDDEN）</h3>
+    <div class="warn-box">
+      <div class="warn-title">🚫 严禁事项</div>
+      <p>这些是 Agent 绝对不能做的事情：</p>
+    </div>
+    <div class="code-block">
+<span class="keyword">## 绝对禁止</span>
+- **严禁**直接修改 `src/models/` 目录下的文件
+- **严禁**在未获得用户确认的情况下删除任何文件
+- **严禁**执行可能导致数据丢失的命令（如 `rm -rf`）
+- **严禁**将敏感信息（密码、密钥）输出到日志
+- **严禁**绕过质量门控（Gate Check）直接进入下一阶段
+    </div>
+
+    <h3>必须遵守（MUST）</h3>
+    <div class="tip-box">
+      <div class="tip-title">✅ 强制要求</div>
+      <p>这些是 Agent 必须做到的事情：</p>
+    </div>
+    <div class="code-block">
+<span class="keyword">## 必须遵守</span>
+- **必须**在每次操作前备份相关文件
+- **必须**使用中文与用户沟通
+- **必须**在完成任务后生成操作日志
+- **必须**遇到不确定时主动询问用户
+- **必须**遵循现有的代码规范和架构模式
+    </div>
+  </div>
+
+  <!-- 输入输出规范 -->
+  <div class="glass-card" style="--card-from:#fb923c;--card-to:#f97316">
+    <div class="section-title">
+      <span class="icon" style="background:rgba(251,146,60,0.2);color:var(--accent4)"><i class="fas fa-exchange-alt"></i></span>
+      <span>输入输出规范</span>
+    </div>
+    <p>清晰的 I/O 规范可以让 Agent 更准确地理解任务和产出结果：</p>
+
+    <h3>输入规范</h3>
+    <div class="code-block">
+<span class="keyword">## 输入格式</span>
+每个任务必须包含：
+1. <span class="function">任务 ID</span>：唯一标识符（如 TASK-2024-001）
+2. <span class="function">任务描述</span>：清晰的目标说明
+3. <span class="function">上下文</span>：相关的背景信息
+4. <span class="function">约束条件</span>：必须遵守的限制
+
+<span class="keyword">## 输入示例</span>
+{
+  "task_id": "TASK-2024-001",
+  "description": "重构用户认证模块，支持 OAuth2.0",
+  "context": "当前使用 JWT，需要兼容旧版本",
+  "constraints": ["不能修改数据库表结构", "必须向后兼容"]
+}
+    </div>
+
+    <h3>输出规范</h3>
+    <div class="code-block">
+<span class="keyword">## 输出格式</span>
+{
+  "task_id": "TASK-2024-001",
+  "status": "completed | failed | blocked",
+  "result": {
+    "summary": "任务完成摘要",
+    "changes": ["修改的文件列表"],
+    "artifacts": ["产出的文档或代码"]
+  },
+  "next_steps": ["建议的后续操作"],
+  "blockers": ["遇到的阻塞问题（如有）"]
+}
+    </div>
+  </div>
+
+  <!-- 错误处理 -->
+  <div class="glass-card" style="--card-from:#f472b6;--card-to:#ec4899">
+    <div class="section-title">
+      <span class="icon" style="background:rgba(244,114,182,0.2);color:var(--accent5)"><i class="fas fa-bug"></i></span>
+      <span>错误处理策略</span>
+    </div>
+    <p>Agent 需要具备完善的错误处理能力：</p>
+
+    <div class="code-block">
+<span class="keyword">## 错误处理流程</span>
+1. <span class="function">捕获错误</span>：识别错误类型和严重程度
+2. <span class="function">分类处理</span>：
+   - 可自愈错误 → 自动重试（最多 3 次）
+   - 可恢复错误 → 执行修复流程
+   - 不可恢复错误 → 上报用户决策
+3. <span class="function">记录日志</span>：完整记录错误信息和处理过程
+4. <span class="function">通知用户</span>：重要错误必须通知用户
+    </div>
+
+    <h3>重试策略</h3>
+    <div class="code-block">
+<span class="comment"># 重试配置</span>
+max_retries: 3
+retry_delay: 2s
+exponential_backoff: true
+
+<span class="comment"># 重试条件</span>
+- 网络超时 → 重试
+- API 限流 → 等待后重试
+- 语法错误 → 自动修复后重试
+- 逻辑错误 → 上报用户
+    </div>
+  </div>
+
+  <!-- 质量门控 -->
+  <div class="glass-card" style="--card-from:#facc15;--card-to:#eab308">
+    <div class="section-title">
+      <span class="icon" style="background:rgba(250,204,21,0.2);color:var(--accent6)"><i class="fas fa-shield-alt"></i></span>
+      <span>质量门控（Gate Check）</span>
+    </div>
+    <p>每个阶段完成后必须通过质量检查才能进入下一阶段：</p>
+
+    <div class="code-block">
+<span class="keyword">## Gate Check 配置</span>
+<span class="function">Gate 0</span>: 知识搜集完成
+  - ✓ 后端代码已拉取
+  - ✓ 前端图谱 ≥ 3 节点
+  - ✓ CODE_KNOWLEDGE.md 已生成
+
+<span class="function">Gate 1</span>: 需求澄清完成
+  - ✓ 唯一任务 ID
+  - ✓ 需求可验证
+  - ✓ 用户已确认
+
+<span class="function">Gate 2</span>: 方案设计完成
+  - ✓ TECHNICAL_SPEC.md 已生成
+  - ✓ feature/*.md 已生成
+  - ✓ Headless 架构合规
+    </div>
+  </div>
+
+  <!-- 参考资源 -->
+  <div class="glass-card" style="--card-from:#06b6d4;--card-to:#0891b2">
+    <div class="section-title">
+      <span class="icon" style="background:rgba(6,182,212,0.2);color:#06b6d4"><i class="fas fa-book"></i></span>
+      <span>参考资源</span>
+    </div>
+
+    <a href="https://github.com/datawhalechina/agentic-ai" target="_blank" class="resource-link">
+      <i class="fas fa-play-circle"></i>
+      <span>吴恩达 Agent 公开课</span>
+      <i class="fas fa-external-link-alt" style="font-size:0.7em;opacity:0.5"></i>
+    </a>
+
+    <a href="https://docs.anthropic.com/en/docs/build-with-claude/agent-patterns" target="_blank" class="resource-link">
+      <i class="fas fa-book"></i>
+      <span>Anthropic Agent 设计模式</span>
+      <i class="fas fa-external-link-alt" style="font-size:0.7em;opacity:0.5"></i>
+    </a>
+
+    <a href="https://docs.claude.com/en/docs/agents-and-tools/claude-code/overview" target="_blank" class="resource-link">
+      <i class="fas fa-book"></i>
+      <span>Claude Code Agent 文档</span>
+      <i class="fas fa-external-link-alt" style="font-size:0.7em;opacity:0.5"></i>
+    </a>
+  </div>
+
+</div>
+
+<footer class="guide-footer">
+  Agent 设计指南 · AI 开发核心概念系列
+</footer>
+
+</body>
+</html>

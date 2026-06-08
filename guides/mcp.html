@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MCP 设计指南 - AI 开发核心概念</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+<link rel="stylesheet" href="style.css">
+<style>
+  .header-content h1 { color: var(--accent4); }
+</style>
+</head>
+<body>
+
+<header class="guide-header">
+  <div class="header-content">
+    <a href="../ai-concepts.html" class="back-link">
+      <i class="fas fa-arrow-left"></i>
+      <span>返回概念图解</span>
+    </a>
+    <h1>🔌 MCP 设计指南</h1>
+    <p class="subtitle">Model Context Protocol - AI 与外部世界的标准化连接</p>
+  </div>
+</header>
+
+<div class="guide-container">
+
+  <!-- 什么是 MCP -->
+  <div class="glass-card" style="--card-from:#fb923c;--card-to:#f97316">
+    <div class="section-title">
+      <span class="icon" style="background:rgba(251,146,60,0.2);color:var(--accent4)"><i class="fas fa-plug"></i></span>
+      <span>什么是 MCP？</span>
+    </div>
+    <p>MCP（Model Context Protocol）是 Anthropic 提出的<strong style="color:var(--text)">标准化协议</strong>，用于连接 AI 模型与外部系统。</p>
+    <p>类比理解：</p>
+    <ul>
+      <li><strong>USB 接口</strong>：让不同设备可以即插即用</li>
+      <li><strong>MCP</strong>：让 AI 可以标准化地对接各种外部服务</li>
+    </ul>
+
+    <div class="tip-box">
+      <div class="tip-title">💡 核心价值</div>
+      <p>有了 MCP，AI 可以：读写文件、调用 API、操作数据库、发送消息、管理日程……而且都是标准化的方式。</p>
+    </div>
+  </div>
+
+  <!-- MCP 架构 -->
+  <div class="glass-card" style="--card-from:#a78bfa;--card-to:#8b5cf6">
+    <div class="section-title">
+      <span class="icon" style="background:rgba(167,139,250,0.2);color:var(--accent2)"><i class="fas fa-project-diagram"></i></span>
+      <span>MCP 架构</span>
+    </div>
+
+    <div class="code-block">
+<span class="comment"># MCP 三层架构</span>
+
+┌─────────────────────────────────────────────┐
+│  <span class="keyword">AI 应用层</span>（Claude, Cursor, etc.）          │
+│  - 发起请求                                  │
+│  - 接收响应                                  │
+└─────────────────────────────────────────────┘
+                    ↕
+┌─────────────────────────────────────────────┐
+│  <span class="function">MCP 协议层</span>                                │
+│  - JSON-RPC 2.0                             │
+│  - 标准化的请求/响应格式                      │
+│  - 工具发现与调用                             │
+└─────────────────────────────────────────────┘
+                    ↕
+┌─────────────────────────────────────────────┐
+│  <span class="string">MCP Server 层</span>（各种服务的实现）            │
+│  - 文件系统 Server                           │
+│  - 数据库 Server                             │
+│  - API Server（GitHub, 飞书, etc.）          │
+└─────────────────────────────────────────────┘
+    </div>
+  </div>
+
+  <!-- MCP Server 示例 -->
+  <div class="glass-card" style="--card-from:#38bdf8;--card-to:#0ea5e9">
+    <div class="section-title">
+      <span class="icon" style="background:rgba(56,189,248,0.2);color:var(--accent)"><i class="fas fa-server"></i></span>
+      <span>常用 MCP Server</span>
+    </div>
+
+    <table style="width:100%;border-collapse:collapse;margin:16px 0">
+      <thead>
+        <tr style="border-bottom:1px solid var(--border)">
+          <th style="text-align:left;padding:12px;color:var(--text);font-size:0.9em">Server</th>
+          <th style="text-align:left;padding:12px;color:var(--text);font-size:0.9em">功能</th>
+          <th style="text-align:left;padding:12px;color:var(--text);font-size:0.9em">使用场景</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="border-bottom:1px solid rgba(255,255,255,0.05)">
+          <td style="padding:12px;color:var(--accent4)"><strong>filesystem</strong></td>
+          <td style="padding:12px;color:var(--text-secondary);font-size:0.9em">读写本地文件</td>
+          <td style="padding:12px;color:var(--text-secondary);font-size:0.9em">代码编辑、文档处理</td>
+        </tr>
+        <tr style="border-bottom:1px solid rgba(255,255,255,0.05)">
+          <td style="padding:12px;color:var(--accent)"><strong>github</strong></td>
+          <td style="padding:12px;color:var(--text-secondary);font-size:0.9em">操作 GitHub</td>
+          <td style="padding:12px;color:var(--text-secondary);font-size:0.9em">PR、Issue、代码管理</td>
+        </tr>
+        <tr style="border-bottom:1px solid rgba(255,255,255,0.05)">
+          <td style="padding:12px;color:var(--accent2)"><strong>feishu</strong></td>
+          <td style="padding:12px;color:var(--text-secondary);font-size:0.9em">操作飞书</td>
+          <td style="padding:12px;color:var(--text-secondary);font-size:0.9em">消息、文档、日程</td>
+        </tr>
+        <tr>
+          <td style="padding:12px;color:var(--accent3)"><strong>postgres</strong></td>
+          <td style="padding:12px;color:var(--text-secondary);font-size:0.9em">操作数据库</td>
+          <td style="padding:12px;color:var(--text-secondary);font-size:0.9em">查询、分析数据</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 自己实现 MCP Server -->
+  <div class="glass-card" style="--card-from:#34d399;--card-to:#10b981">
+    <div class="section-title">
+      <span class="icon" style="background:rgba(52,211,153,0.2);color:var(--accent3)"><i class="fas fa-code"></i></span>
+      <span>实现自己的 MCP Server</span>
+    </div>
+
+    <div class="code-block">
+<span class="comment"># 使用 TypeScript 实现一个简单的 MCP Server</span>
+<span class="keyword">import</span> { Server } <span class="keyword">from</span> <span class="string">'@modelcontextprotocol/sdk/server/index.js'</span>;
+
+<span class="keyword">const</span> server = <span class="keyword">new</span> Server({
+  name: <span class="string">'my-custom-server'</span>,
+  version: <span class="string">'1.0.0'</span>,
+});
+
+<span class="comment">// 定义工具</span>
+server.setRequestHandler(<span class="string">'tools/list'</span>, <span class="keyword">async</span> () => ({
+  tools: [
+    {
+      name: <span class="string">'get-user-info'</span>,
+      description: <span class="string">'获取用户信息'</span>,
+      inputSchema: {
+        type: <span class="string">'object'</span>,
+        properties: {
+          userId: { type: <span class="string">'string'</span>, description: <span class="string">'用户 ID'</span> }
+        }
+      }
+    }
+  ]
+}));
+
+<span class="comment">// 实现工具</span>
+server.setRequestHandler(<span class="string">'tools/call'</span>, <span class="keyword">async</span> (request) => {
+  <span class="keyword">if</span> (request.params.name === <span class="string">'get-user-info'</span>) {
+    <span class="keyword">const</span> user = <span class="keyword">await</span> fetchUser(request.params.arguments.userId);
+    <span class="keyword">return</span> {
+      content: [{ type: <span class="string">'text'</span>, text: JSON.stringify(user) }]
+    };
+  }
+});
+    </div>
+  </div>
+
+  <!-- MCP 配置 -->
+  <div class="glass-card" style="--card-from:#f472b6;--card-to:#ec4899">
+    <div class="section-title">
+      <span class="icon" style="background:rgba(244,114,182,0.2);color:var(--accent5)"><i class="fas fa-cog"></i></span>
+      <span>MCP 配置示例</span>
+    </div>
+
+    <h3>Claude Code MCP 配置</h3>
+    <div class="code-block">
+<span class="comment"># .claude/settings.json</span>
+{
+  <span class="string">"mcpServers"</span>: {
+    <span class="string">"filesystem"</span>: {
+      <span class="string">"command"</span>: <span class="string">"npx"</span>,
+      <span class="string">"args"</span>: [<span class="string">"-y"</span>, <span class="string">"@modelcontextprotocol/server-filesystem"</span>, <span class="string">"/path/to/files"</span>]
+    },
+    <span class="string">"github"</span>: {
+      <span class="string">"command"</span>: <span class="string">"npx"</span>,
+      <span class="string">"args"</span>: [<span class="string">"-y"</span>, <span class="string">"@modelcontextprotocol/server-github"</span>],
+      <span class="string">"env"</span>: {
+        <span class="string">"GITHUB_TOKEN"</span>: <span class="string">"your-token-here"</span>
+      }
+    }
+  }
+}
+    </div>
+  </div>
+
+  <!-- 参考资源 -->
+  <div class="glass-card" style="--card-from:#06b6d4;--card-to:#0891b2">
+    <div class="section-title">
+      <span class="icon" style="background:rgba(6,182,212,0.2);color:#06b6d4"><i class="fas fa-book"></i></span>
+      <span>参考资源</span>
+    </div>
+
+    <a href="https://github.com/punkpeye/awesome-mcp-servers/blob/main/README-zh.md" target="_blank" class="resource-link">
+      <i class="fas fa-cubes"></i>
+      <span>Awesome MCP Servers（中文）</span>
+      <i class="fas fa-external-link-alt" style="font-size:0.7em;opacity:0.5"></i>
+    </a>
+
+    <a href="https://modelcontextprotocol.io/introduction" target="_blank" class="resource-link">
+      <i class="fas fa-book"></i>
+      <span>MCP 官方文档</span>
+      <i class="fas fa-external-link-alt" style="font-size:0.7em;opacity:0.5"></i>
+    </a>
+
+    <a href="https://github.com/modelcontextprotocol/servers" target="_blank" class="resource-link">
+      <i class="fas fa-github"></i>
+      <span>MCP 官方 Server 仓库</span>
+      <i class="fas fa-external-link-alt" style="font-size:0.7em;opacity:0.5"></i>
+    </a>
+  </div>
+
+</div>
+
+<footer class="guide-footer">
+  MCP 设计指南 · AI 开发核心概念系列
+</footer>
+
+</body>
+</html>
