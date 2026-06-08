@@ -861,21 +861,31 @@ sequenceDiagram
 <script>
 (function(){
   /* ── Scroll Reveal (from resume) ── */
+  const isIframe = window.self !== window.top;
   const sections = document.querySelectorAll('.reveal-section');
-  sections.forEach((section, i) => {
-    section.style.transitionDelay = `${i * 0.06}s`;
-  });
 
-  const revealObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-        revealObserver.unobserve(entry.target);
-      }
+  // If in iframe, show all content immediately
+  if (isIframe) {
+    sections.forEach(el => {
+      el.classList.add('visible');
+      el.style.transitionDelay = '0s';
     });
-  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+  } else {
+    sections.forEach((section, i) => {
+      section.style.transitionDelay = `${i * 0.06}s`;
+    });
 
-  sections.forEach(section => revealObserver.observe(section));
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+    sections.forEach(section => revealObserver.observe(section));
+  }
 
   /* ── Mermaid Zoom ── */
   const modal = document.getElementById('zoom-modal');
