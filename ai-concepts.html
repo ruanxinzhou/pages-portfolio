@@ -4,45 +4,212 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AI 开发核心概念图解</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
 <style>
+  /* ============================================================
+     Keyframe Animations (from resume)
+     ============================================================ */
+  @keyframes shimmer {
+    0%   { background-position: -200% center; }
+    100% { background-position:  200% center; }
+  }
+  @keyframes grain {
+    0%, 100% { transform: translate(0, 0); }
+    10%       { transform: translate(-2%, -3%); }
+    30%       { transform: translate(3%, 2%); }
+    50%       { transform: translate(-1%, 4%); }
+    70%       { transform: translate(2%, -2%); }
+    90%       { transform: translate(-3%, 1%); }
+  }
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ============================================================
+     CSS Variables — Design Tokens (from resume)
+     ============================================================ */
   :root {
     --bg: #0f172a;
-    --card: #1e293b;
-    --border: #334155;
+    --bg-subtle: #1e293b;
+    --card: rgba(30,41,59,0.85);
+    --card-solid: #1e293b;
+    --border: rgba(51,65,85,0.8);
     --text: #e2e8f0;
+    --text-secondary: #94a3b8;
     --accent: #38bdf8;
     --accent2: #a78bfa;
     --accent3: #34d399;
     --accent4: #fb923c;
     --accent5: #f472b6;
     --accent6: #facc15;
+    --shadow: 0 4px 24px rgba(0,0,0,0.25);
+    --shadow-lg: 0 12px 40px rgba(0,0,0,0.35);
+    --radius: 16px;
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
+
+  /* ============================================================
+     Reset & Base
+     ============================================================ */
   * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
   body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Noto Sans SC', sans-serif;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Noto Sans SC', sans-serif;
     background: var(--bg);
+    background-image: radial-gradient(circle, rgba(56,189,248,0.06) 1px, transparent 1px);
+    background-size: 32px 32px;
     color: var(--text);
     line-height: 1.8;
-    padding: 40px 20px;
+    padding: 0;
+    -webkit-font-smoothing: antialiased;
   }
-  .container { max-width: 1100px; margin: 0 auto; }
-  h1 {
+
+  /* ============================================================
+     Header with Noise Texture (from resume)
+     ============================================================ */
+  .site-header {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+    position: relative;
+    overflow: hidden;
+    padding: 48px 20px;
     text-align: center;
-    font-size: 2em;
+  }
+  .site-header::before {
+    content: '';
+    position: absolute;
+    inset: -50%;
+    width: 200%;
+    height: 200%;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    opacity: 0.3;
+    animation: grain 8s steps(10) infinite;
+    z-index: 0;
+  }
+  .site-header::after {
+    content: '';
+    position: absolute;
+    top: -80px;
+    right: -60px;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(56,189,248,0.15) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .header-content {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ============================================================
+     Glassmorphism Card (from resume)
+     ============================================================ */
+  .glass-card {
+    background: var(--card);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    position: relative;
+    overflow: hidden;
+    transition: var(--transition);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.05);
+  }
+  .glass-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--card-from, var(--accent)), var(--card-to, var(--accent2)));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
+  }
+  .glass-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(105deg, transparent 25%, rgba(255,255,255,0.08) 50%, transparent 75%);
+    background-size: 200% 100%;
+    background-position: -200% center;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .glass-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg), inset 0 1px 0 rgba(255,255,255,0.1);
+    border-color: rgba(56,189,248,0.3);
+  }
+  .glass-card:hover::before {
+    transform: scaleX(1);
+  }
+  .glass-card:hover::after {
+    opacity: 1;
+    animation: shimmer 0.65s ease forwards;
+  }
+
+  /* ============================================================
+     Scroll Reveal (from resume)
+     ============================================================ */
+  .reveal-section {
+    opacity: 0;
+    transform: translateY(24px);
+    filter: blur(3px);
+    transition: opacity 0.6s cubic-bezier(0.4,0,0.2,1),
+                transform 0.6s cubic-bezier(0.4,0,0.2,1),
+                filter 0.6s cubic-bezier(0.4,0,0.2,1);
+  }
+  .reveal-section.visible {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+
+  .reveal-card {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.45s ease, transform 0.45s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  }
+  .reveal-card.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ============================================================
+     Container
+     ============================================================ */
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+
+  /* ============================================================
+     Title
+     ============================================================ */
+  h1 {
+    font-size: 2.4em;
+    font-weight: 800;
     background: linear-gradient(135deg, var(--accent), var(--accent2));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    margin-bottom: 10px;
+    background-clip: text;
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
   }
   .subtitle {
-    text-align: center;
-    color: #94a3b8;
-    margin-bottom: 40px;
+    color: var(--text-secondary);
+    margin-bottom: 0;
     font-size: 1.05em;
+    font-weight: 400;
   }
 
-  /* ---- 概念卡片 ---- */
+  /* ============================================================
+     Concept Cards
+     ============================================================ */
   .cards {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -50,124 +217,193 @@
     margin-bottom: 50px;
   }
   .card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 24px;
-    transition: transform .2s, box-shadow .2s;
+    padding: 28px;
   }
-  .card:hover { transform: translateY(-4px); box-shadow: 0 8px 30px rgba(0,0,0,.35); }
-  .card-icon { font-size: 2em; margin-bottom: 8px; }
-  .card h3 { font-size: 1.2em; margin-bottom: 6px; }
-  .card p { font-size: .95em; color: #cbd5e1; }
+  .card-icon {
+    font-size: 2.2em;
+    margin-bottom: 10px;
+    display: inline-block;
+    transition: transform 0.3s ease;
+  }
+  .glass-card:hover .card-icon {
+    transform: scale(1.1) rotate(-3deg);
+  }
+  .card h3 {
+    font-size: 1.15em;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--text);
+  }
+  .card p {
+    font-size: 0.92em;
+    color: var(--text-secondary);
+    line-height: 1.7;
+  }
+  .card .example {
+    margin-top: 8px;
+    color: var(--text-secondary);
+    font-size: 0.85em;
+    opacity: 0.8;
+  }
   .card .tag {
     display: inline-block;
-    font-size: .75em;
-    padding: 2px 10px;
+    font-size: 0.72em;
+    padding: 4px 12px;
     border-radius: 20px;
-    margin-top: 10px;
+    margin-top: 14px;
     font-weight: 600;
+    letter-spacing: 0.3px;
   }
-  .tag-vibe  { background: rgba(56,189,248,.15); color: var(--accent); }
-  .tag-agent { background: rgba(167,139,250,.15); color: var(--accent2); }
-  .tag-skill { background: rgba(52,211,153,.15); color: var(--accent3); }
-  .tag-mcp   { background: rgba(251,146,60,.15); color: var(--accent4); }
-  .tag-cli   { background: rgba(244,114,182,.15); color: var(--accent5); }
-  .tag-tools { background: rgba(250,204,21,.15); color: var(--accent6); }
+  .tag-vibe  { background: rgba(56,189,248,0.12); color: var(--accent); border: 1px solid rgba(56,189,248,0.25); }
+  .tag-agent { background: rgba(167,139,250,0.12); color: var(--accent2); border: 1px solid rgba(167,139,250,0.25); }
+  .tag-skill { background: rgba(52,211,153,0.12); color: var(--accent3); border: 1px solid rgba(52,211,153,0.25); }
+  .tag-mcp   { background: rgba(251,146,60,0.12); color: var(--accent4); border: 1px solid rgba(251,146,60,0.25); }
+  .tag-cli   { background: rgba(244,114,182,0.12); color: var(--accent5); border: 1px solid rgba(244,114,182,0.25); }
+  .tag-tools { background: rgba(250,204,21,0.12); color: var(--accent6); border: 1px solid rgba(250,204,21,0.25); }
 
-  /* ---- Mermaid 图表区 ---- */
-  .diagram-section { margin-bottom: 50px; }
+  /* ============================================================
+     Diagram Section
+     ============================================================ */
+  .diagram-section {
+    margin-bottom: 50px;
+  }
   .diagram-section h2 {
-    font-size: 1.4em;
+    font-size: 1.35em;
+    font-weight: 700;
     margin-bottom: 20px;
     padding-left: 14px;
     border-left: 4px solid var(--accent2);
   }
   .mermaid-wrapper {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 14px;
     padding: 30px 20px;
     overflow-x: auto;
   }
   .mermaid svg { max-width: 100%; height: auto; }
 
-  /* ---- 一句话总结 ---- */
+  /* ============================================================
+     Summary
+     ============================================================ */
   .summary {
     text-align: center;
-    font-size: 1.15em;
-    padding: 28px;
-    background: linear-gradient(135deg, rgba(56,189,248,.08), rgba(167,139,250,.08));
+    font-size: 1.1em;
+    padding: 32px;
+    background: linear-gradient(135deg, rgba(56,189,248,0.06), rgba(167,139,250,0.06));
     border: 1px solid var(--border);
-    border-radius: 14px;
+    border-radius: var(--radius);
     margin-bottom: 30px;
+    position: relative;
+    overflow: hidden;
+  }
+  .summary::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2), var(--accent3));
   }
   .summary strong { color: var(--accent); }
+
+  /* ============================================================
+     Footer
+     ============================================================ */
+  .site-footer {
+    border-top: 1px solid var(--border);
+    padding: 24px 20px;
+    text-align: center;
+    margin-top: 60px;
+    color: var(--text-secondary);
+    font-size: 0.82em;
+    background: rgba(15,23,42,0.5);
+    backdrop-filter: blur(8px);
+  }
+
+  /* ============================================================
+     Responsive
+     ============================================================ */
+  @media (max-width: 768px) {
+    .site-header { padding: 32px 16px; }
+    h1 { font-size: 1.8em; }
+    .cards { grid-template-columns: 1fr; }
+    .card { padding: 20px; }
+  }
+
+  /* ============================================================
+     Scrollbar
+     ============================================================ */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: #0f172a; }
+  ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
 </style>
 </head>
 <body>
-<div class="container">
 
-<h1>🧠 AI 开发核心概念图解</h1>
-<p class="subtitle">Vibe Coding · Agent · SKILL · MCP · CLI · Tools — 一页搞懂</p>
+<!-- ============ HEADER ============ -->
+<header class="site-header">
+  <div class="header-content">
+    <h1>🧠 AI 开发核心概念图解</h1>
+    <p class="subtitle">Vibe Coding · Agent · SKILL · MCP · CLI · Tools — 一页搞懂</p>
+  </div>
+</header>
+
+<div class="container" style="padding-top:40px;padding-bottom:40px">
 
 <!-- ============ 概念卡片 ============ -->
 <div class="cards">
 
-  <div class="card">
+  <div class="glass-card card reveal-card" style="--card-from:#38bdf8;--card-to:#0ea5e9">
     <div class="card-icon">🎸</div>
     <h3 style="color:var(--accent)">Vibe Coding（氛围编程）</h3>
-    <p>用<strong>自然语言描述意图</strong>，AI 帮你写代码。你负责"调方向"，AI 负责"写代码和改 Bug"。</p>
-    <p style="margin-top:6px;color:#94a3b8;font-size:.9em">💡 例：你说"帮我写一个读取飞书文档的 Python 脚本"，AI 直接生成代码。</p>
+    <p>用<strong style="color:var(--text)">自然语言描述意图</strong>，AI 帮你写代码。你负责"调方向"，AI 负责"写代码和改 Bug"。</p>
+    <p class="example">💡 例：你说"帮我写一个读取飞书文档的 Python 脚本"，AI 直接生成代码。</p>
     <span class="tag tag-vibe">理念 / 新范式</span>
   </div>
 
-  <div class="card">
+  <div class="glass-card card reveal-card" style="--card-from:#a78bfa;--card-to:#8b5cf6">
     <div class="card-icon">🤖</div>
     <h3 style="color:var(--accent2)">Agent（智能体）</h3>
-    <p>能<strong>自主规划并执行任务</strong>的 AI。理解目标 → 拆解步骤 → 调用工具 → 检查修正，全程无需你一步步指挥。</p>
-    <p style="margin-top:6px;color:#94a3b8;font-size:.9em">💡 例：你说"帮我把 GitHub 上的代码部署到服务器"，Agent 自己：拉代码 → 检查依赖 → 打包 → 部署。</p>
+    <p>能<strong style="color:var(--text)">自主规划并执行任务</strong>的 AI。理解目标 → 拆解步骤 → 调用工具 → 检查修正，全程无需你一步步指挥。</p>
+    <p class="example">💡 例：你说"帮我把 GitHub 上的代码部署到服务器"，Agent 自己：拉代码 → 检查依赖 → 打包 → 部署。</p>
     <span class="tag tag-agent">执行者</span>
   </div>
 
-  <div class="card">
+  <div class="glass-card card reveal-card" style="--card-from:#34d399;--card-to:#10b981">
     <div class="card-icon">🧩</div>
     <h3 style="color:var(--accent3)">SKILL（技能）</h3>
-    <p>预封装的<strong>"专业能力包"</strong>。装了 pptx 技能，Agent 就知道做 PPT 的最佳实践；用哪个装哪个。</p>
-    <p style="margin-top:6px;color:#94a3b8;font-size:.9em">💡 例：装了 <code>lark-doc</code> 技能后，Agent 就知道如何正确调用飞书文档 API 来创建和编辑文档。</p>
+    <p>预封装的<strong style="color:var(--text)">"专业能力包"</strong>。装了 pptx 技能，Agent 就知道做 PPT 的最佳实践；用哪个装哪个。</p>
+    <p class="example">💡 例：装了 <code style="background:rgba(52,211,153,0.15);padding:2px 6px;border-radius:4px">lark-doc</code> 技能后，Agent 就知道如何正确调用飞书文档 API 来创建和编辑文档。</p>
     <span class="tag tag-skill">专业知识</span>
   </div>
 
-  <div class="card">
+  <div class="glass-card card reveal-card" style="--card-from:#fb923c;--card-to:#f97316">
     <div class="card-icon">🔌</div>
     <h3 style="color:var(--accent4)">MCP（Model Context Protocol）</h3>
-    <p>AI 与外部系统之间的<strong>"标准接口协议"</strong>。就像 USB 接口，让 AI 能标准化地对接各种外部服务。</p>
-    <p style="margin-top:6px;color:#94a3b8;font-size:.9em">💡 例：通过飞书 MCP，AI 能直接帮你<strong>发消息、读文档、建日程</strong>；通过 GitHub MCP，能<strong>创建 PR、查看 Issue</strong>。</p>
+    <p>AI 与外部系统之间的<strong style="color:var(--text)">"标准接口协议"</strong>。就像 USB 接口，让 AI 能标准化地对接各种外部服务。</p>
+    <p class="example">💡 例：通过飞书 MCP，AI 能直接帮你<strong style="color:var(--text)">发消息、读文档、建日程</strong>；通过 GitHub MCP，能<strong style="color:var(--text)">创建 PR、查看 Issue</strong>。</p>
     <span class="tag tag-mcp">连接协议</span>
   </div>
 
-  <div class="card">
+  <div class="glass-card card reveal-card" style="--card-from:#f472b6;--card-to:#ec4899">
     <div class="card-icon">⌨️</div>
     <h3 style="color:var(--accent5)">CLI（命令行界面）</h3>
-    <p>通过<strong>文字命令</strong>操作工具的方式，没有图形界面。AI Agent 可以代替你敲命令，你只需说意图。</p>
-    <p style="margin-top:6px;color:#94a3b8;font-size:.9em">💡 例：你说"部署项目"，Agent 在后台执行 <code>git push</code>、<code>docker build</code>、<code>npm install</code> 等命令。</p>
+    <p>通过<strong style="color:var(--text)">文字命令</strong>操作工具的方式，没有图形界面。AI Agent 可以代替你敲命令，你只需说意图。</p>
+    <p class="example">💡 例：你说"部署项目"，Agent 在后台执行 <code style="background:rgba(244,114,182,0.15);padding:2px 6px;border-radius:4px">git push</code>、<code style="background:rgba(244,114,182,0.15);padding:2px 6px;border-radius:4px">docker build</code>、<code style="background:rgba(244,114,182,0.15);padding:2px 6px;border-radius:4px">npm install</code> 等命令。</p>
     <span class="tag tag-cli">交互方式</span>
   </div>
 
-  <div class="card">
+  <div class="glass-card card reveal-card" style="--card-from:#facc15;--card-to:#eab308">
     <div class="card-icon">🔧</div>
     <h3 style="color:var(--accent6)">Tools（工具）</h3>
-    <p>Agent 可以调用的<strong>"具体能力单元"</strong>：读文件、写文件、搜索代码、执行命令……没有 Tools，Agent 只能说不能做。</p>
-    <p style="margin-top:6px;color:#94a3b8;font-size:.9em">💡 例：<code>Read</code> 工具读取本地配置文件，<code>WebSearch</code> 搜索 API 文档，<code>RunCommand</code> 执行数据库迁移脚本。</p>
+    <p>Agent 可以调用的<strong style="color:var(--text)">"具体能力单元"</strong>：读文件、写文件、搜索代码、执行命令……没有 Tools，Agent 只能说不能做。</p>
+    <p class="example">💡 例：<code style="background:rgba(250,204,21,0.15);padding:2px 6px;border-radius:4px">Read</code> 工具读取本地配置文件，<code style="background:rgba(250,204,21,0.15);padding:2px 6px;border-radius:4px">WebSearch</code> 搜索 API 文档，<code style="background:rgba(250,204,21,0.15);padding:2px 6px;border-radius:4px">RunCommand</code> 执行数据库迁移脚本。</p>
     <span class="tag tag-tools">执行手段</span>
   </div>
 
 </div>
 
 <!-- ============ 图表 1：整体关系 ============ -->
-<div class="diagram-section">
+<div class="diagram-section reveal-section">
   <h2>🗺️ 概念关系全景图</h2>
-  <div class="mermaid-wrapper">
+  <div class="glass-card mermaid-wrapper" style="--card-from:#38bdf8;--card-to:#a78bfa">
     <pre class="mermaid">
 flowchart TB
     subgraph 理念层
@@ -210,9 +446,9 @@ flowchart TB
 </div>
 
 <!-- ============ 图表 2：Agent 工作流 ============ -->
-<div class="diagram-section">
+<div class="diagram-section reveal-section">
   <h2>🔄 Agent 工作流程</h2>
-  <div class="mermaid-wrapper">
+  <div class="glass-card mermaid-wrapper" style="--card-from:#a78bfa;--card-to:#8b5cf6">
     <pre class="mermaid">
 sequenceDiagram
     participant U as 👤 用户
@@ -239,9 +475,9 @@ sequenceDiagram
 </div>
 
 <!-- ============ 图表 3：类比图 ============ -->
-<div class="diagram-section">
+<div class="diagram-section reveal-section">
   <h2>🏢 一个类比：AI 开发团队</h2>
-  <div class="mermaid-wrapper">
+  <div class="glass-card mermaid-wrapper" style="--card-from:#fb923c;--card-to:#f97316">
     <pre class="mermaid">
 flowchart LR
     subgraph 老板["👤 你（老板）"]
@@ -285,9 +521,9 @@ flowchart LR
 </div>
 
 <!-- ============ 图表 4：分层架构 ============ -->
-<div class="diagram-section">
+<div class="diagram-section reveal-section">
   <h2>📚 分层架构图</h2>
-  <div class="mermaid-wrapper">
+  <div class="glass-card mermaid-wrapper" style="--card-from:#34d399;--card-to:#10b981">
     <pre class="mermaid">
 flowchart TB
     L1["🎸 <b>Vibe Coding</b> — 理念：用自然语言驱动开发"]
@@ -310,12 +546,15 @@ flowchart TB
 </div>
 
 <!-- ============ 一句话总结 ============ -->
-<div class="summary">
+<div class="summary reveal-section">
     <strong>Vibe Coding</strong> 是理念 → <strong>Agent</strong> 是执行者 → <strong>SKILL</strong> 赋予它专业能力 → <strong>MCP</strong> 连接外部世界 → <strong>CLI</strong> 和 <strong>Tools</strong> 是它干活的手段。
 </div>
 
 </div>
 
+<!-- ============================================================
+     Scripts
+     ============================================================ -->
 <script>
   mermaid.initialize({
     startOnLoad: true,
@@ -327,11 +566,52 @@ flowchart TB
       lineColor: '#64748b',
       secondaryColor: '#0f172a',
       tertiaryColor: '#1e293b',
-      fontFamily: '-apple-system, BlinkMacSystemFont, Segoe UI, PingFang SC, Noto Sans SC, sans-serif'
+      fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, PingFang SC, Noto Sans SC, sans-serif'
     },
     flowchart: { curve: 'basis', padding: 20 },
     sequence: { mirrorActors: false }
   });
+
+  /* ── Scroll Reveal (from resume) ── */
+  (function(){
+    // Section-level reveal
+    const sections = document.querySelectorAll('.reveal-section');
+    const sectionObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          sectionObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+    sections.forEach((section, i) => {
+      section.style.transitionDelay = `${i * 0.06}s`;
+      sectionObserver.observe(section);
+    });
+
+    // Card stagger reveal
+    const cards = document.querySelectorAll('.reveal-card');
+    const cardObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const cards = entry.target.querySelectorAll('.reveal-card');
+          cards.forEach((card, i) => {
+            setTimeout(() => {
+              card.classList.add('visible');
+            }, i * 80);
+          });
+          cardObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.05 });
+    const cardsGrid = document.querySelector('.cards');
+    if (cardsGrid) cardObserver.observe(cardsGrid);
+  })();
 </script>
+
+<footer class="site-footer">
+  AI 开发核心概念图解 · 2026-06-08
+</footer>
+
 </body>
 </html>

@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
   <script type="module">
     import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11.8.1/dist/mermaid.esm.min.mjs';
     mermaid.initialize({startOnLoad: true, theme: 'default'});
@@ -26,40 +27,199 @@
     }
   </script>
   <style>
-    .glow-red{box-shadow:0 0 24px rgba(233,69,96,.18),0 4px 16px rgba(0,0,0,.1)}
-    .glow-green{box-shadow:0 0 24px rgba(35,134,54,.18),0 4px 16px rgba(0,0,0,.1)}
-    .glow-blue{box-shadow:0 0 24px rgba(31,111,235,.18),0 4px 16px rgba(0,0,0,.1)}
-    .glow-purple{box-shadow:0 0 24px rgba(137,87,229,.18),0 4px 16px rgba(0,0,0,.1)}
-    @keyframes flowDown{0%,100%{opacity:.5;transform:translateY(0)}50%{opacity:1;transform:translateY(5px)}}
-    .flow-anim{animation:flowDown 2s ease-in-out infinite}
-    @keyframes fadeSlideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-    .fade-in{animation:fadeSlideUp .5s ease-out both}
-    .card-lift{transition:transform .2s,box-shadow .2s}
-    .card-lift:hover{transform:translateY(-3px);box-shadow:0 12px 32px rgba(0,0,0,.12)}
-    ::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:#f1f5f9}::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:3px}
-    .tree-line{position:relative;padding-left:1.5rem}
-    .tree-line::before{content:'';position:absolute;left:.75rem;top:0;bottom:0;width:2px;background:#e2e8f0}
-    .tree-node{position:relative;padding:.35rem 0}
-    .tree-node::before{content:'';position:absolute;left:-.75rem;top:50%;width:.75rem;height:2px;background:#e2e8f0}
-    .mermaid-zoom{cursor:zoom-in;position:relative;overflow:hidden;border-radius:12px;transition:box-shadow .2s}
-    .mermaid-zoom:hover{box-shadow:0 0 0 2px rgba(31,111,235,.3)}
-    .mermaid-zoom::after{content:'🔍 点击放大';position:absolute;bottom:8px;right:8px;background:rgba(0,0,0,.6);color:#fff;font-size:11px;padding:4px 10px;border-radius:6px;pointer-events:none;opacity:0;transition:opacity .2s}
-    .mermaid-zoom:hover::after{opacity:1}
-    #zoom-modal{position:fixed;inset:0;z-index:9999;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.85);backdrop-filter:blur(8px)}
-    #zoom-modal.active{display:flex}
-    #zoom-modal .zoom-content{position:relative;width:100vw;height:100vh;overflow:auto;background:#fff;padding:24px}
-    #zoom-modal .zoom-close{position:fixed;top:16px;right:16px;width:40px;height:40px;border-radius:50%;background:rgba(0,0,0,.1);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;transition:background .2s;z-index:10000;color:#333}
-    #zoom-modal .zoom-close:hover{background:rgba(0,0,0,.2)}
-    #zoom-modal .zoom-hint{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.6);color:#fff;font-size:12px;padding:6px 14px;border-radius:8px;pointer-events:none;z-index:10000}
+    /* ============================================================
+       Keyframe Animations (from resume)
+       ============================================================ */
+    @keyframes shimmer {
+      0%   { background-position: -200% center; }
+      100% { background-position:  200% center; }
+    }
+    @keyframes grain {
+      0%, 100% { transform: translate(0, 0); }
+      10%       { transform: translate(-2%, -3%); }
+      30%       { transform: translate(3%, 2%); }
+      50%       { transform: translate(-1%, 4%); }
+      70%       { transform: translate(2%, -2%); }
+      90%       { transform: translate(-3%, 1%); }
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes flowDown {
+      0%,100% { opacity:.5; transform:translateY(0); }
+      50%     { opacity:1; transform:translateY(5px); }
+    }
+    .flow-anim { animation: flowDown 2s ease-in-out infinite; }
+
+    /* ============================================================
+       Glassmorphism & Card Effects
+       ============================================================ */
+    .glass-card {
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(226,232,240,0.8);
+      border-radius: 16px;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.9);
+    }
+    .glass-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--card-accent-from, #1f6feb), var(--card-accent-to, #8957e5));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
+    }
+    .glass-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(105deg, transparent 25%, rgba(255,255,255,0.5) 50%, transparent 75%);
+      background-size: 200% 100%;
+      background-position: -200% center;
+      opacity: 0;
+      pointer-events: none;
+    }
+    .glass-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.12), inset 0 1px 0 rgba(255,255,255,0.95);
+      border-color: rgba(31,111,235,0.2);
+    }
+    .glass-card:hover::before {
+      transform: scaleX(1);
+    }
+    .glass-card:hover::after {
+      opacity: 1;
+      animation: shimmer 0.65s ease forwards;
+    }
+
+    /* Layer-specific accent colors */
+    .layer-red   { --card-accent-from: #e94560; --card-accent-to: #f85149; }
+    .layer-green { --card-accent-from: #238636; --card-accent-to: #34d399; }
+    .layer-purple{ --card-accent-from: #8957e5; --card-accent-to: #a78bfa; }
+    .layer-blue  { --card-accent-from: #1f6feb; --card-accent-to: #38bdf8; }
+    .layer-amber { --card-accent-from: #d29922; --card-accent-to: #fbbf24; }
+
+    /* Glow effects */
+    .glow-red    { box-shadow: 0 0 24px rgba(233,69,96,.15), 0 4px 16px rgba(0,0,0,.08); }
+    .glow-green  { box-shadow: 0 0 24px rgba(35,134,54,.15), 0 4px 16px rgba(0,0,0,.08); }
+    .glow-blue   { box-shadow: 0 0 24px rgba(31,111,235,.15), 0 4px 16px rgba(0,0,0,.08); }
+    .glow-purple { box-shadow: 0 0 24px rgba(137,87,229,.15), 0 4px 16px rgba(0,0,0,.08); }
+
+    /* ============================================================
+       Scroll Reveal (from resume)
+       ============================================================ */
+    .reveal-section {
+      opacity: 0;
+      transform: translateY(24px);
+      filter: blur(3px);
+      transition: opacity 0.6s cubic-bezier(0.4,0,0.2,1),
+                  transform 0.6s cubic-bezier(0.4,0,0.2,1),
+                  filter 0.6s cubic-bezier(0.4,0,0.2,1);
+    }
+    .reveal-section.visible {
+      opacity: 1;
+      transform: translateY(0);
+      filter: blur(0);
+    }
+
+    /* ============================================================
+       Header with Noise Texture (from resume)
+       ============================================================ */
+    .header-noise::before {
+      content: '';
+      position: absolute;
+      inset: -50%;
+      width: 200%;
+      height: 200%;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      opacity: 0.3;
+      animation: grain 8s steps(10) infinite;
+      z-index: 0;
+    }
+
+    /* ============================================================
+       Mermaid Zoom
+       ============================================================ */
+    .mermaid-zoom {
+      cursor: zoom-in;
+      position: relative;
+      overflow: hidden;
+      border-radius: 16px;
+      transition: all 0.3s ease;
+    }
+    .mermaid-zoom:hover {
+      box-shadow: 0 0 0 2px rgba(31,111,235,0.3), 0 8px 24px rgba(0,0,0,0.1);
+    }
+    .mermaid-zoom::after {
+      content: '🔍 点击放大';
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(8px);
+      color: #fff;
+      font-size: 11px;
+      padding: 5px 12px;
+      border-radius: 8px;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.25s;
+    }
+    .mermaid-zoom:hover::after { opacity: 1; }
+
+    #zoom-modal {
+      position: fixed; inset: 0; z-index: 9999;
+      display: none; align-items: center; justify-content: center;
+      background: rgba(0,0,0,0.85);
+      backdrop-filter: blur(8px);
+    }
+    #zoom-modal.active { display: flex; }
+    #zoom-modal .zoom-content {
+      position: relative; width: 100vw; height: 100vh;
+      overflow: auto; background: #fff; padding: 24px;
+    }
+    #zoom-modal .zoom-close {
+      position: fixed; top: 16px; right: 16px;
+      width: 40px; height: 40px; border-radius: 50%;
+      background: rgba(0,0,0,0.1); border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; transition: background 0.2s; z-index: 10000; color: #333;
+    }
+    #zoom-modal .zoom-close:hover { background: rgba(0,0,0,0.2); }
+    #zoom-modal .zoom-hint {
+      position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%);
+      background: rgba(0,0,0,0.6); color: #fff; font-size: 12px;
+      padding: 6px 14px; border-radius: 8px; pointer-events: none; z-index: 10000;
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #f1f5f9; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+
+    /* ============================================================
+       Responsive
+       ============================================================ */
+    @media (max-width: 768px) {
+      .glass-card { border-radius: 12px; }
+    }
   </style>
 </head>
 <body class="bg-gray-50 font-sans text-slate-800 antialiased">
 
 <!-- ============ HEADER ============ -->
-<header class="bg-dark-900 text-white sticky top-0 z-50 border-b border-dark-600">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
+<header class="bg-dark-900 text-white sticky top-0 z-50 border-b border-dark-600 header-noise">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between relative z-10">
     <div class="flex items-center gap-3">
-      <div class="w-10 h-10 bg-gradient-to-br from-accent-red to-accent-purple rounded-xl flex items-center justify-center">
+      <div class="w-10 h-10 bg-gradient-to-br from-accent-red to-accent-purple rounded-xl flex items-center justify-center shadow-lg">
         <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/></svg>
       </div>
       <div>
@@ -68,9 +228,9 @@
       </div>
     </div>
     <div class="hidden md:flex items-center gap-2 text-xs">
-      <span class="px-2.5 py-1 bg-dark-700 rounded-md text-slate-300">三层分离</span>
-      <span class="px-2.5 py-1 bg-dark-700 rounded-md text-slate-300">ACP 协议</span>
-      <span class="px-2.5 py-1 bg-dark-700 rounded-md text-slate-300">Gate Check</span>
+      <span class="px-2.5 py-1 bg-dark-700/80 backdrop-blur rounded-md text-slate-300 border border-dark-600">三层分离</span>
+      <span class="px-2.5 py-1 bg-dark-700/80 backdrop-blur rounded-md text-slate-300 border border-dark-600">ACP 协议</span>
+      <span class="px-2.5 py-1 bg-dark-700/80 backdrop-blur rounded-md text-slate-300 border border-dark-600">Gate Check</span>
     </div>
   </div>
 </header>
@@ -78,22 +238,21 @@
 <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-16">
 
 <!-- ============ 1. ARCHITECTURE OVERVIEW ============ -->
-<section class="fade-in">
+<section class="reveal-section">
   <div class="flex items-center gap-3 mb-8">
     <span class="w-9 h-9 bg-gradient-to-br from-accent-red to-accent-rose rounded-xl flex items-center justify-center text-white text-sm font-bold shadow-lg">1</span>
     <h2 class="text-2xl font-bold text-slate-900">架构总览</h2>
   </div>
   <p class="text-slate-600 leading-relaxed mb-8 max-w-3xl">MBSE 多智能体开发架构采用<strong class="text-slate-900">三层分离设计</strong>，将工作流编排、阶段执行、方法知识解耦为独立层次，通过 <strong class="text-slate-900">ACP 协议</strong>实现标准化通信。</p>
 
-  <div class="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 overflow-x-auto">
+  <div class="glass-card p-6 sm:p-8 overflow-x-auto" style="--card-accent-from:#e94560;--card-accent-to:#8957e5">
     <div class="min-w-[720px]">
 
       <!-- ORCHESTRATION -->
       <div class="text-center mb-3"><span class="px-3 py-1 rounded-full text-[10px] font-bold bg-accent-red/10 text-accent-red uppercase tracking-wider">Orchestration Layer</span></div>
       <div class="glow-red rounded-2xl border-2 border-accent-red/30 bg-gradient-to-br from-red-50 via-white to-pink-50 p-5 mb-3">
-        <div class="absolute -top-3 left-6 bg-accent-red text-white text-[10px] font-bold px-3 py-1 rounded-full shadow">编排层</div>
         <div class="flex justify-center mt-1">
-          <div class="bg-white rounded-xl border border-red-200 px-8 py-4 shadow-sm card-lift cursor-pointer w-full max-w-sm">
+          <div class="glass-card layer-red px-8 py-4 cursor-pointer w-full max-w-sm text-center" style="transform:none">
             <h3 class="text-sm font-bold text-slate-900">Project Coordinator</h3>
             <p class="text-xs text-slate-500 mt-1">总控调度 · Gate Check · 用户交互</p>
           </div>
@@ -111,39 +270,38 @@
       <!-- EXECUTION -->
       <div class="text-center mb-3"><span class="px-3 py-1 rounded-full text-[10px] font-bold bg-accent-green/10 text-accent-green uppercase tracking-wider">Execution Layer</span></div>
       <div class="glow-green rounded-2xl border-2 border-accent-green/30 bg-gradient-to-br from-green-50 via-white to-emerald-50 p-5 mb-3">
-        <div class="absolute -top-3 left-6 bg-accent-green text-white text-[10px] font-bold px-3 py-1 rounded-full shadow">执行层</div>
         <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2 mt-1">
-          <div class="bg-white rounded-lg border border-green-200 px-2 py-3 text-center card-lift cursor-pointer shadow-sm">
+          <div class="glass-card layer-green px-2 py-3 text-center cursor-pointer" style="transform:none">
             <span class="text-[9px] font-bold text-green-600 bg-green-50 px-1.5 py-0.5 rounded">阶段 0</span>
             <h4 class="text-[11px] font-bold text-slate-900 mt-1.5">Knowledge Collector</h4>
             <p class="text-[9px] text-slate-500">知识搜集</p>
           </div>
-          <div class="bg-white rounded-lg border border-green-200 px-2 py-3 text-center card-lift cursor-pointer shadow-sm">
+          <div class="glass-card layer-green px-2 py-3 text-center cursor-pointer" style="transform:none">
             <span class="text-[9px] font-bold text-green-600 bg-green-50 px-1.5 py-0.5 rounded">阶段 1</span>
             <h4 class="text-[11px] font-bold text-slate-900 mt-1.5">Requirement Clarifier</h4>
             <p class="text-[9px] text-slate-500">需求澄清</p>
           </div>
-          <div class="bg-white rounded-lg border border-green-200 px-2 py-3 text-center card-lift cursor-pointer shadow-sm">
+          <div class="glass-card layer-green px-2 py-3 text-center cursor-pointer" style="transform:none">
             <span class="text-[9px] font-bold text-green-600 bg-green-50 px-1.5 py-0.5 rounded">阶段 2</span>
             <h4 class="text-[11px] font-bold text-slate-900 mt-1.5">Solution Designer</h4>
             <p class="text-[9px] text-slate-500">方案设计</p>
           </div>
-          <div class="bg-white rounded-lg border border-amber-200 px-2 py-3 text-center card-lift cursor-pointer shadow-sm">
+          <div class="glass-card layer-amber px-2 py-3 text-center cursor-pointer" style="transform:none">
             <span class="text-[9px] font-bold text-amber-600 bg-amber-50 px-1.5 py-0.5 rounded">阶段 3</span>
             <h4 class="text-[11px] font-bold text-slate-900 mt-1.5">Code Developer</h4>
             <p class="text-[9px] text-slate-500">代码开发</p>
           </div>
-          <div class="bg-white rounded-lg border border-blue-200 px-2 py-3 text-center card-lift cursor-pointer shadow-sm">
+          <div class="glass-card layer-blue px-2 py-3 text-center cursor-pointer" style="transform:none">
             <span class="text-[9px] font-bold text-blue-600 bg-blue-50 px-1.5 py-0.5 rounded">阶段 3</span>
             <h4 class="text-[11px] font-bold text-slate-900 mt-1.5">Verifier</h4>
             <p class="text-[9px] text-slate-500">独立验证</p>
           </div>
-          <div class="bg-white rounded-lg border border-red-200 px-2 py-3 text-center card-lift cursor-pointer shadow-sm">
+          <div class="glass-card px-2 py-3 text-center cursor-pointer" style="--card-accent-from:#da3633;--card-accent-to:#e94560;transform:none">
             <span class="text-[9px] font-bold text-red-600 bg-red-50 px-1.5 py-0.5 rounded">阶段 3.5</span>
             <h4 class="text-[11px] font-bold text-slate-900 mt-1.5">Template Auditor</h4>
             <p class="text-[9px] text-slate-500">模板审计</p>
           </div>
-          <div class="bg-white rounded-lg border border-rose-200 px-2 py-3 text-center card-lift cursor-pointer shadow-sm">
+          <div class="glass-card px-2 py-3 text-center cursor-pointer" style="--card-accent-from:#f85149;--card-acto:#fb7185;transform:none">
             <span class="text-[9px] font-bold text-rose-600 bg-rose-50 px-1.5 py-0.5 rounded">阶段 4</span>
             <h4 class="text-[11px] font-bold text-slate-900 mt-1.5">QA Reviewer</h4>
             <p class="text-[9px] text-slate-500">质量审查</p>
@@ -162,24 +320,23 @@
       <!-- KNOWLEDGE -->
       <div class="text-center mb-3"><span class="px-3 py-1 rounded-full text-[10px] font-bold bg-accent-purple/10 text-accent-purple uppercase tracking-wider">Knowledge Layer</span></div>
       <div class="glow-purple rounded-2xl border-2 border-accent-purple/30 bg-gradient-to-br from-purple-50 via-white to-violet-50 p-5">
-        <div class="absolute -top-3 left-6 bg-accent-purple text-white text-[10px] font-bold px-3 py-1 rounded-full shadow">知识层</div>
         <div class="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-7 gap-2 mt-1">
-          <div class="bg-white rounded-lg border border-purple-200 px-2 py-2.5 text-center card-lift cursor-pointer shadow-sm"><span class="text-[10px] font-semibold text-slate-700">knowledge-collection</span></div>
-          <div class="bg-white rounded-lg border border-purple-200 px-2 py-2.5 text-center card-lift cursor-pointer shadow-sm"><span class="text-[10px] font-semibold text-slate-700">requirement-clarification</span></div>
-          <div class="bg-white rounded-lg border border-purple-200 px-2 py-2.5 text-center card-lift cursor-pointer shadow-sm"><span class="text-[10px] font-semibold text-slate-700">solution-design</span></div>
-          <div class="bg-white rounded-lg border border-purple-200 px-2 py-2.5 text-center card-lift cursor-pointer shadow-sm"><span class="text-[10px] font-semibold text-slate-700">code-development</span></div>
-          <div class="bg-white rounded-lg border border-purple-200 px-2 py-2.5 text-center card-lift cursor-pointer shadow-sm"><span class="text-[10px] font-semibold text-slate-700">verification</span></div>
-          <div class="bg-white rounded-lg border border-purple-200 px-2 py-2.5 text-center card-lift cursor-pointer shadow-sm"><span class="text-[10px] font-semibold text-slate-700">template-audit</span></div>
-          <div class="bg-white rounded-lg border border-purple-200 px-2 py-2.5 text-center card-lift cursor-pointer shadow-sm"><span class="text-[10px] font-semibold text-slate-700">qa-review</span></div>
+          <div class="glass-card layer-purple px-2 py-2.5 text-center cursor-pointer" style="transform:none"><span class="text-[10px] font-semibold text-slate-700">knowledge-collection</span></div>
+          <div class="glass-card layer-purple px-2 py-2.5 text-center cursor-pointer" style="transform:none"><span class="text-[10px] font-semibold text-slate-700">requirement-clarification</span></div>
+          <div class="glass-card layer-purple px-2 py-2.5 text-center cursor-pointer" style="transform:none"><span class="text-[10px] font-semibold text-slate-700">solution-design</span></div>
+          <div class="glass-card layer-purple px-2 py-2.5 text-center cursor-pointer" style="transform:none"><span class="text-[10px] font-semibold text-slate-700">code-development</span></div>
+          <div class="glass-card layer-purple px-2 py-2.5 text-center cursor-pointer" style="transform:none"><span class="text-[10px] font-semibold text-slate-700">verification</span></div>
+          <div class="glass-card layer-purple px-2 py-2.5 text-center cursor-pointer" style="transform:none"><span class="text-[10px] font-semibold text-slate-700">template-audit</span></div>
+          <div class="glass-card layer-purple px-2 py-2.5 text-center cursor-pointer" style="transform:none"><span class="text-[10px] font-semibold text-slate-700">qa-review</span></div>
         </div>
         <div class="mt-4 pt-3 border-t border-dashed border-purple-200">
           <p class="text-center text-[9px] text-purple-400 mb-2">辅助 Skills</p>
           <div class="flex flex-wrap justify-center gap-1.5">
-            <span class="px-2.5 py-1 bg-slate-100 text-slate-600 text-[10px] font-medium rounded-md border border-slate-200">acp-protocol</span>
-            <span class="px-2.5 py-1 bg-slate-100 text-slate-600 text-[10px] font-medium rounded-md border border-slate-200">graph-query-helper</span>
-            <span class="px-2.5 py-1 bg-slate-100 text-slate-600 text-[10px] font-medium rounded-md border border-slate-200">headless-architecture</span>
-            <span class="px-2.5 py-1 bg-slate-100 text-slate-600 text-[10px] font-medium rounded-md border border-slate-200">code-review-rules</span>
-            <span class="px-2.5 py-1 bg-slate-100 text-slate-600 text-[10px] font-medium rounded-md border border-slate-200">mbse-internal-libs</span>
+            <span class="px-2.5 py-1 bg-slate-100/80 backdrop-blur text-slate-600 text-[10px] font-medium rounded-md border border-slate-200">acp-protocol</span>
+            <span class="px-2.5 py-1 bg-slate-100/80 backdrop-blur text-slate-600 text-[10px] font-medium rounded-md border border-slate-200">graph-query-helper</span>
+            <span class="px-2.5 py-1 bg-slate-100/80 backdrop-blur text-slate-600 text-[10px] font-medium rounded-md border border-slate-200">headless-architecture</span>
+            <span class="px-2.5 py-1 bg-slate-100/80 backdrop-blur text-slate-600 text-[10px] font-medium rounded-md border border-slate-200">code-review-rules</span>
+            <span class="px-2.5 py-1 bg-slate-100/80 backdrop-blur text-slate-600 text-[10px] font-medium rounded-md border border-slate-200">mbse-internal-libs</span>
           </div>
         </div>
       </div>
@@ -189,15 +346,15 @@
 </section>
 
 <!-- ============ 2. LAYER RESPONSIBILITIES ============ -->
-<section class="fade-in">
+<section class="reveal-section">
   <div class="flex items-center gap-3 mb-8">
     <span class="w-9 h-9 bg-gradient-to-br from-accent-green to-emerald-600 rounded-xl flex items-center justify-center text-white text-sm font-bold shadow-lg">2</span>
     <h2 class="text-2xl font-bold text-slate-900">三层职责分离</h2>
   </div>
-  <div class="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8">
+  <div class="glass-card p-6 sm:p-8" style="--card-accent-from:#238636;--card-accent-to:#8957e5">
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
       <!-- Orchestration -->
-      <div class="bg-gradient-to-br from-red-50 to-pink-50 rounded-2xl border border-red-200 p-6 card-lift">
+      <div class="glass-card layer-red p-6">
         <div class="w-10 h-10 bg-accent-red rounded-xl flex items-center justify-center mb-4 shadow"><svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg></div>
         <h3 class="text-lg font-bold text-red-900 mb-1">编排层</h3>
         <p class="text-xs text-red-600 font-medium mb-3">Orchestration</p>
@@ -209,7 +366,7 @@
         </ul>
       </div>
       <!-- Execution -->
-      <div class="bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl border border-green-200 p-6 card-lift">
+      <div class="glass-card layer-green p-6">
         <div class="w-10 h-10 bg-accent-green rounded-xl flex items-center justify-center mb-4 shadow"><svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg></div>
         <h3 class="text-lg font-bold text-green-900 mb-1">执行层</h3>
         <p class="text-xs text-green-600 font-medium mb-3">Execution</p>
@@ -221,7 +378,7 @@
         </ul>
       </div>
       <!-- Knowledge -->
-      <div class="bg-gradient-to-br from-purple-50 to-violet-50 rounded-2xl border border-purple-200 p-6 card-lift">
+      <div class="glass-card layer-purple p-6">
         <div class="w-10 h-10 bg-accent-purple rounded-xl flex items-center justify-center mb-4 shadow"><svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg></div>
         <h3 class="text-lg font-bold text-purple-900 mb-1">知识层</h3>
         <p class="text-xs text-purple-600 font-medium mb-3">Knowledge</p>
@@ -239,16 +396,16 @@
     <div class="mt-8 overflow-x-auto">
       <h3 class="text-lg font-bold text-slate-900 mb-4">设计原则</h3>
       <table class="w-full text-sm">
-        <thead><tr class="bg-slate-50 border-b border-slate-200">
+        <thead><tr class="bg-slate-50/80 backdrop-blur border-b border-slate-200">
           <th class="text-left px-4 py-2.5 text-xs font-semibold text-slate-500 uppercase">层级</th>
           <th class="text-left px-4 py-2.5 text-xs font-semibold text-slate-500 uppercase">职责</th>
           <th class="text-left px-4 py-2.5 text-xs font-semibold text-slate-500 uppercase">包含什么</th>
           <th class="text-left px-4 py-2.5 text-xs font-semibold text-slate-500 uppercase">不包含什么</th>
         </tr></thead>
         <tbody class="divide-y divide-slate-100">
-          <tr class="hover:bg-slate-50"><td class="px-4 py-3 font-medium text-accent-red">编排层</td><td class="px-4 py-3 text-slate-700">调度 + 质量门控</td><td class="px-4 py-3 text-slate-600">Gate Check 条件、用户交互协议</td><td class="px-4 py-3 text-slate-600">具体执行方法</td></tr>
-          <tr class="hover:bg-slate-50"><td class="px-4 py-3 font-medium text-accent-green">执行层</td><td class="px-4 py-3 text-slate-700">阶段执行</td><td class="px-4 py-3 text-slate-600">角色定义、工具权限、交付物声明</td><td class="px-4 py-3 text-slate-600">方法细节（引用 Skill）</td></tr>
-          <tr class="hover:bg-slate-50"><td class="px-4 py-3 font-medium text-accent-purple">知识层</td><td class="px-4 py-3 text-slate-700">方法知识</td><td class="px-4 py-3 text-slate-600">操作步骤、模板、标准、脚本</td><td class="px-4 py-3 text-slate-600">执行角色、调度逻辑</td></tr>
+          <tr class="hover:bg-slate-50/60 transition-colors"><td class="px-4 py-3 font-medium text-accent-red">编排层</td><td class="px-4 py-3 text-slate-700">调度 + 质量门控</td><td class="px-4 py-3 text-slate-600">Gate Check 条件、用户交互协议</td><td class="px-4 py-3 text-slate-600">具体执行方法</td></tr>
+          <tr class="hover:bg-slate-50/60 transition-colors"><td class="px-4 py-3 font-medium text-accent-green">执行层</td><td class="px-4 py-3 text-slate-700">阶段执行</td><td class="px-4 py-3 text-slate-600">角色定义、工具权限、交付物声明</td><td class="px-4 py-3 text-slate-600">方法细节（引用 Skill）</td></tr>
+          <tr class="hover:bg-slate-50/60 transition-colors"><td class="px-4 py-3 font-medium text-accent-purple">知识层</td><td class="px-4 py-3 text-slate-700">方法知识</td><td class="px-4 py-3 text-slate-600">操作步骤、模板、标准、脚本</td><td class="px-4 py-3 text-slate-600">执行角色、调度逻辑</td></tr>
         </tbody>
       </table>
     </div>
@@ -256,12 +413,12 @@
 </section>
 
 <!-- ============ 3. WORKFLOW PANORAMA ============ -->
-<section class="fade-in">
+<section class="reveal-section">
   <div class="flex items-center gap-3 mb-8">
     <span class="w-9 h-9 bg-gradient-to-br from-accent-blue to-cyan-600 rounded-xl flex items-center justify-center text-white text-sm font-bold shadow-lg">3</span>
     <h2 class="text-2xl font-bold text-slate-900">工作流全景</h2>
   </div>
-  <div class="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 overflow-x-auto">
+  <div class="glass-card p-6 sm:p-8 overflow-x-auto" style="--card-accent-from:#1f6feb;--card-accent-to:#38bdf8">
     <div class="min-w-[700px] space-y-3">
 
       <!-- User Input -->
@@ -274,16 +431,16 @@
       <!-- Stages -->
       <div class="space-y-3">
         <!-- Stage 0 -->
-        <div class="border-l-4 border-accent-green rounded-r-xl bg-green-50/50 p-4">
+        <div class="border-l-4 border-accent-green rounded-r-xl bg-green-50/50 p-4 transition-all hover:bg-green-50/80 hover:translate-x-1">
           <div class="flex items-center gap-2 mb-2"><span class="px-2.5 py-1 bg-accent-green text-white text-xs font-bold rounded-lg">阶段 0</span><span class="text-sm font-semibold text-slate-900">知识搜集</span></div>
           <div class="flex flex-wrap gap-2 text-xs">
-            <span class="px-2 py-1 bg-white rounded border border-green-200 text-slate-600">拉取后端代码</span>
+            <span class="px-2 py-1 bg-white/80 backdrop-blur rounded border border-green-200 text-slate-600">拉取后端代码</span>
             <svg class="w-3 h-3 text-green-400 self-center" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
-            <span class="px-2 py-1 bg-white rounded border border-green-200 text-slate-600">查询前端图谱</span>
+            <span class="px-2 py-1 bg-white/80 backdrop-blur rounded border border-green-200 text-slate-600">查询前端图谱</span>
             <svg class="w-3 h-3 text-green-400 self-center" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
-            <span class="px-2 py-1 bg-white rounded border border-green-200 text-slate-600">查询后端图谱</span>
+            <span class="px-2 py-1 bg-white/80 backdrop-blur rounded border border-green-200 text-slate-600">查询后端图谱</span>
             <svg class="w-3 h-3 text-green-400 self-center" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
-            <span class="px-2 py-1 bg-green-100 rounded border border-green-300 text-green-800 font-medium">生成 CODE_KNOWLEDGE.md</span>
+            <span class="px-2 py-1 bg-green-100/80 backdrop-blur rounded border border-green-300 text-green-800 font-medium">生成 CODE_KNOWLEDGE.md</span>
           </div>
           <div class="mt-2 flex items-center gap-2 text-[10px] text-slate-500">
             <svg class="w-3 h-3 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
@@ -292,16 +449,16 @@
         </div>
 
         <!-- Stage 1 -->
-        <div class="border-l-4 border-accent-blue rounded-r-xl bg-blue-50/50 p-4">
+        <div class="border-l-4 border-accent-blue rounded-r-xl bg-blue-50/50 p-4 transition-all hover:bg-blue-50/80 hover:translate-x-1">
           <div class="flex items-center gap-2 mb-2"><span class="px-2.5 py-1 bg-accent-blue text-white text-xs font-bold rounded-lg">阶段 1</span><span class="text-sm font-semibold text-slate-900">需求澄清</span></div>
           <div class="flex flex-wrap gap-2 text-xs">
-            <span class="px-2 py-1 bg-white rounded border border-blue-200 text-slate-600">收集需求信息</span>
+            <span class="px-2 py-1 bg-white/80 backdrop-blur rounded border border-blue-200 text-slate-600">收集需求信息</span>
             <svg class="w-3 h-3 text-blue-400 self-center" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
-            <span class="px-2 py-1 bg-white rounded border border-blue-200 text-slate-600">参考代码知识</span>
+            <span class="px-2 py-1 bg-white/80 backdrop-blur rounded border border-blue-200 text-slate-600">参考代码知识</span>
             <svg class="w-3 h-3 text-blue-400 self-center" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
-            <span class="px-2 py-1 bg-white rounded border border-blue-200 text-slate-600">逐功能点澄清</span>
+            <span class="px-2 py-1 bg-white/80 backdrop-blur rounded border border-blue-200 text-slate-600">逐功能点澄清</span>
             <svg class="w-3 h-3 text-blue-400 self-center" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
-            <span class="px-2 py-1 bg-blue-100 rounded border border-blue-300 text-blue-800 font-medium">生成 DRAFT_SPEC.md</span>
+            <span class="px-2 py-1 bg-blue-100/80 backdrop-blur rounded border border-blue-300 text-blue-800 font-medium">生成 DRAFT_SPEC.md</span>
           </div>
           <div class="mt-2 flex items-center gap-2 text-[10px] text-slate-500">
             <svg class="w-3 h-3 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
@@ -310,16 +467,16 @@
         </div>
 
         <!-- Stage 2 -->
-        <div class="border-l-4 border-accent-purple rounded-r-xl bg-purple-50/50 p-4">
+        <div class="border-l-4 border-accent-purple rounded-r-xl bg-purple-50/50 p-4 transition-all hover:bg-purple-50/80 hover:translate-x-1">
           <div class="flex items-center gap-2 mb-2"><span class="px-2.5 py-1 bg-accent-purple text-white text-xs font-bold rounded-lg">阶段 2</span><span class="text-sm font-semibold text-slate-900">方案设计</span></div>
           <div class="flex flex-wrap gap-2 text-xs">
-            <span class="px-2 py-1 bg-white rounded border border-purple-200 text-slate-600">代码库分析</span>
+            <span class="px-2 py-1 bg-white/80 backdrop-blur rounded border border-purple-200 text-slate-600">代码库分析</span>
             <svg class="w-3 h-3 text-purple-400 self-center" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
-            <span class="px-2 py-1 bg-white rounded border border-purple-200 text-slate-600">逐功能点设计</span>
+            <span class="px-2 py-1 bg-white/80 backdrop-blur rounded border border-purple-200 text-slate-600">逐功能点设计</span>
             <svg class="w-3 h-3 text-purple-400 self-center" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
-            <span class="px-2 py-1 bg-white rounded border border-purple-200 text-slate-600">整体方案整合</span>
+            <span class="px-2 py-1 bg-white/80 backdrop-blur rounded border border-purple-200 text-slate-600">整体方案整合</span>
             <svg class="w-3 h-3 text-purple-400 self-center" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
-            <span class="px-2 py-1 bg-purple-100 rounded border border-purple-300 text-purple-800 font-medium">生成 TECHNICAL_SPEC.md + feature/*.md</span>
+            <span class="px-2 py-1 bg-purple-100/80 backdrop-blur rounded border border-purple-300 text-purple-800 font-medium">生成 TECHNICAL_SPEC.md + feature/*.md</span>
           </div>
           <div class="mt-2 flex items-center gap-2 text-[10px] text-slate-500">
             <svg class="w-3 h-3 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
@@ -328,14 +485,14 @@
         </div>
 
         <!-- Stage 3 -->
-        <div class="border-l-4 border-accent-amber rounded-r-xl bg-amber-50/50 p-4">
+        <div class="border-l-4 border-accent-amber rounded-r-xl bg-amber-50/50 p-4 transition-all hover:bg-amber-50/80 hover:translate-x-1">
           <div class="flex items-center gap-2 mb-2"><span class="px-2.5 py-1 bg-accent-amber text-white text-xs font-bold rounded-lg">阶段 3</span><span class="text-sm font-semibold text-slate-900">代码开发</span></div>
           <div class="flex flex-wrap gap-2 text-xs">
-            <span class="px-2 py-1 bg-white rounded border border-amber-200 text-slate-600">按任务顺序实现</span>
+            <span class="px-2 py-1 bg-white/80 backdrop-blur rounded border border-amber-200 text-slate-600">按任务顺序实现</span>
             <svg class="w-3 h-3 text-amber-400 self-center" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
-            <span class="px-2 py-1 bg-white rounded border border-amber-200 text-slate-600">pnpm typecheck + lint</span>
+            <span class="px-2 py-1 bg-white/80 backdrop-blur rounded border border-amber-200 text-slate-600">pnpm typecheck + lint</span>
             <svg class="w-3 h-3 text-amber-400 self-center" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
-            <span class="px-2 py-1 bg-white rounded border border-amber-200 text-slate-600">自审修复</span>
+            <span class="px-2 py-1 bg-white/80 backdrop-blur rounded border border-amber-200 text-slate-600">自审修复</span>
           </div>
           <div class="mt-2 flex items-center gap-2 text-[10px] text-slate-500">
             <svg class="w-3 h-3 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
@@ -344,31 +501,31 @@
         </div>
 
         <!-- Stage 3.5 -->
-        <div class="border-l-4 border-accent-crimson rounded-r-xl bg-red-50/50 p-4">
+        <div class="border-l-4 border-accent-crimson rounded-r-xl bg-red-50/50 p-4 transition-all hover:bg-red-50/80 hover:translate-x-1">
           <div class="flex items-center gap-2 mb-2"><span class="px-2.5 py-1 bg-accent-crimson text-white text-xs font-bold rounded-lg">阶段 3.5</span><span class="text-sm font-semibold text-slate-900">模板审计</span></div>
           <div class="flex flex-wrap gap-2 text-xs">
-            <span class="px-2 py-1 bg-white rounded border border-red-200 text-slate-600">TA: 扫描 template/ 目录</span>
+            <span class="px-2 py-1 bg-white/80 backdrop-blur rounded border border-red-200 text-slate-600">TA: 扫描 template/ 目录</span>
             <svg class="w-3 h-3 text-red-400 self-center" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
-            <span class="px-2 py-1 bg-white rounded border border-red-200 text-slate-600">扫描临时接口</span>
+            <span class="px-2 py-1 bg-white/80 backdrop-blur rounded border border-red-200 text-slate-600">扫描临时接口</span>
             <svg class="w-3 h-3 text-red-400 self-center" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
-            <span class="px-2 py-1 bg-white rounded border border-red-200 text-slate-600">检查后端 API 就绪状态</span>
+            <span class="px-2 py-1 bg-white/80 backdrop-blur rounded border border-red-200 text-slate-600">检查后端 API 就绪状态</span>
             <svg class="w-3 h-3 text-red-400 self-center" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
-            <span class="px-2 py-1 bg-red-100 rounded border border-red-300 text-red-800 font-medium">生成审计报告</span>
+            <span class="px-2 py-1 bg-red-100/80 backdrop-blur rounded border border-red-300 text-red-800 font-medium">生成审计报告</span>
           </div>
           <div class="mt-2 text-[10px] text-slate-500">
-            <span class="px-2 py-0.5 bg-amber-50 text-amber-700 rounded font-medium">alt 有可替换接口 → 派遣 CD 替换临时接口</span>
+            <span class="px-2 py-0.5 bg-amber-50/80 text-amber-700 rounded font-medium">alt 有可替换接口 → 派遣 CD 替换临时接口</span>
           </div>
         </div>
 
         <!-- Stage 4 -->
-        <div class="border-l-4 border-accent-rose rounded-r-xl bg-rose-50/50 p-4">
+        <div class="border-l-4 border-accent-rose rounded-r-xl bg-rose-50/50 p-4 transition-all hover:bg-rose-50/80 hover:translate-x-1">
           <div class="flex items-center gap-2 mb-2"><span class="px-2.5 py-1 bg-accent-rose text-white text-xs font-bold rounded-lg">阶段 4</span><span class="text-sm font-semibold text-slate-900">QA 审核</span></div>
           <div class="flex flex-wrap gap-2 text-xs">
-            <span class="px-2 py-1 bg-white rounded border border-rose-200 text-slate-600">QR: 第一阶段 · 规范符合审查</span>
+            <span class="px-2 py-1 bg-white/80 backdrop-blur rounded border border-rose-200 text-slate-600">QR: 第一阶段 · 规范符合审查</span>
             <svg class="w-3 h-3 text-rose-400 self-center" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
-            <span class="px-2 py-1 bg-white rounded border border-rose-200 text-slate-600">第二阶段 · 代码质量审查</span>
+            <span class="px-2 py-1 bg-white/80 backdrop-blur rounded border border-rose-200 text-slate-600">第二阶段 · 代码质量审查</span>
             <svg class="w-3 h-3 text-rose-400 self-center" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
-            <span class="px-2 py-1 bg-rose-100 rounded border border-rose-300 text-rose-800 font-medium">生成审查报告</span>
+            <span class="px-2 py-1 bg-rose-100/80 backdrop-blur rounded border border-rose-300 text-rose-800 font-medium">生成审查报告</span>
           </div>
           <div class="mt-2 flex items-center gap-2 text-[10px] text-slate-500">
             <svg class="w-3 h-3 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
@@ -377,14 +534,14 @@
         </div>
 
         <!-- Stage 5 -->
-        <div class="border-l-4 border-accent-blue rounded-r-xl bg-blue-50/50 p-4">
+        <div class="border-l-4 border-accent-blue rounded-r-xl bg-blue-50/50 p-4 transition-all hover:bg-blue-50/80 hover:translate-x-1">
           <div class="flex items-center gap-2 mb-2"><span class="px-2.5 py-1 bg-accent-blue text-white text-xs font-bold rounded-lg">阶段 5</span><span class="text-sm font-semibold text-slate-900">收尾</span></div>
           <div class="flex flex-wrap gap-2 text-xs">
-            <span class="px-2 py-1 bg-white rounded border border-blue-200 text-slate-600">规格漂移检测</span>
+            <span class="px-2 py-1 bg-white/80 backdrop-blur rounded border border-blue-200 text-slate-600">规格漂移检测</span>
             <svg class="w-3 h-3 text-blue-400 self-center" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
-            <span class="px-2 py-1 bg-white rounded border border-blue-200 text-slate-600">文档对齐</span>
+            <span class="px-2 py-1 bg-white/80 backdrop-blur rounded border border-blue-200 text-slate-600">文档对齐</span>
             <svg class="w-3 h-3 text-blue-400 self-center" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
-            <span class="px-2 py-1 bg-blue-100 rounded border border-blue-300 text-blue-800 font-medium">代码提交</span>
+            <span class="px-2 py-1 bg-blue-100/80 backdrop-blur rounded border border-blue-300 text-blue-800 font-medium">代码提交</span>
           </div>
           <div class="mt-2"><span class="px-3 py-1 bg-green-600 text-white text-xs font-bold rounded-lg shadow">交付用户</span></div>
         </div>
@@ -395,12 +552,12 @@
 </section>
 
 <!-- ============ 4. AGENT INTERACTION SEQUENCE (Mermaid) ============ -->
-<section class="fade-in">
+<section class="reveal-section">
   <div class="flex items-center gap-3 mb-8">
     <span class="w-9 h-9 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-xl flex items-center justify-center text-white text-sm font-bold shadow-lg">4</span>
     <h2 class="text-2xl font-bold text-slate-900">Agent 交互序列</h2>
   </div>
-  <div class="mermaid-zoom bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 overflow-x-auto">
+  <div class="mermaid-zoom glass-card p-6 sm:p-8 overflow-x-auto" style="--card-accent-from:#06b6d4;--card-accent-to:#1f6feb">
     <pre class="mermaid">
 sequenceDiagram
     autonumber
@@ -487,12 +644,12 @@ sequenceDiagram
 </section>
 
 <!-- ============ 5. DATA FLOW ============ -->
-<section class="fade-in">
+<section class="reveal-section">
   <div class="flex items-center gap-3 mb-8">
     <span class="w-9 h-9 bg-gradient-to-br from-pink-500 to-rose-600 rounded-xl flex items-center justify-center text-white text-sm font-bold shadow-lg">5</span>
     <h2 class="text-2xl font-bold text-slate-900">数据流向</h2>
   </div>
-  <div class="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 overflow-x-auto">
+  <div class="glass-card p-6 sm:p-8 overflow-x-auto" style="--card-accent-from:#ec4899;--card-accent-to:#f43f5e">
     <div class="min-w-[700px]">
       <div class="flex items-center gap-3 mb-6">
         <div class="bg-slate-700 text-white rounded-xl px-4 py-3 text-center shadow shrink-0">
@@ -502,74 +659,74 @@ sequenceDiagram
         <svg class="w-6 h-6 text-slate-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
       </div>
       <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-        <div class="bg-green-50 border border-green-200 rounded-xl p-3 text-center card-lift"><div class="text-[10px] font-bold text-green-700 mb-1">阶段 0 产出</div><div class="text-[10px] font-code text-slate-700 bg-white rounded px-2 py-1 border border-green-100">CODE_KNOWLEDGE.md</div></div>
-        <div class="bg-blue-50 border border-blue-200 rounded-xl p-3 text-center card-lift"><div class="text-[10px] font-bold text-blue-700 mb-1">阶段 1 产出</div><div class="text-[10px] font-code text-slate-700 bg-white rounded px-2 py-1 border border-blue-100">DRAFT_SPEC.md</div></div>
-        <div class="bg-purple-50 border border-purple-200 rounded-xl p-3 text-center card-lift"><div class="text-[10px] font-bold text-purple-700 mb-1">阶段 2 产出</div><div class="text-[10px] font-code text-slate-700 bg-white rounded px-2 py-1 border border-purple-100">TECHNICAL_SPEC.md<br>feature/*.md</div></div>
-        <div class="bg-amber-50 border border-amber-200 rounded-xl p-3 text-center card-lift"><div class="text-[10px] font-bold text-amber-700 mb-1">阶段 3 产出</div><div class="text-[10px] font-code text-slate-700 bg-white rounded px-2 py-1 border border-amber-100">useXxxLogic.ts<br>XxxView.tsx<br>index.module.less</div></div>
-        <div class="bg-red-50 border border-red-200 rounded-xl p-3 text-center card-lift"><div class="text-[10px] font-bold text-red-700 mb-1">阶段 3.5 产出</div><div class="text-[10px] font-code text-slate-700 bg-white rounded px-2 py-1 border border-red-100">模板审计报告</div></div>
-        <div class="bg-rose-50 border border-rose-200 rounded-xl p-3 text-center card-lift"><div class="text-[10px] font-bold text-rose-700 mb-1">阶段 4 产出</div><div class="text-[10px] font-code text-slate-700 bg-white rounded px-2 py-1 border border-rose-100">审查报告<br>(pass/conditional/fail)</div></div>
+        <div class="glass-card layer-green p-3 text-center"><div class="text-[10px] font-bold text-green-700 mb-1">阶段 0 产出</div><div class="text-[10px] font-code text-slate-700 bg-white/80 backdrop-blur rounded px-2 py-1 border border-green-100">CODE_KNOWLEDGE.md</div></div>
+        <div class="glass-card layer-blue p-3 text-center"><div class="text-[10px] font-bold text-blue-700 mb-1">阶段 1 产出</div><div class="text-[10px] font-code text-slate-700 bg-white/80 backdrop-blur rounded px-2 py-1 border border-blue-100">DRAFT_SPEC.md</div></div>
+        <div class="glass-card layer-purple p-3 text-center"><div class="text-[10px] font-bold text-purple-700 mb-1">阶段 2 产出</div><div class="text-[10px] font-code text-slate-700 bg-white/80 backdrop-blur rounded px-2 py-1 border border-purple-100">TECHNICAL_SPEC.md<br>feature/*.md</div></div>
+        <div class="glass-card layer-amber p-3 text-center"><div class="text-[10px] font-bold text-amber-700 mb-1">阶段 3 产出</div><div class="text-[10px] font-code text-slate-700 bg-white/80 backdrop-blur rounded px-2 py-1 border border-amber-100">useXxxLogic.ts<br>XxxView.tsx<br>index.module.less</div></div>
+        <div class="glass-card px-3 text-center" style="--card-accent-from:#da3633;--card-accent-to:#e94560"><div class="text-[10px] font-bold text-red-700 mb-1">阶段 3.5 产出</div><div class="text-[10px] font-code text-slate-700 bg-white/80 backdrop-blur rounded px-2 py-1 border border-red-100">模板审计报告</div></div>
+        <div class="glass-card px-3 text-center" style="--card-accent-from:#f85149;--card-accent-to:#fb7185"><div class="text-[10px] font-bold text-rose-700 mb-1">阶段 4 产出</div><div class="text-[10px] font-code text-slate-700 bg-white/80 backdrop-blur rounded px-2 py-1 border border-rose-100">审查报告<br>(pass/conditional/fail)</div></div>
       </div>
     </div>
   </div>
 </section>
 
 <!-- ============ 6. GATE CHECK ============ -->
-<section class="fade-in">
+<section class="reveal-section">
   <div class="flex items-center gap-3 mb-8">
     <span class="w-9 h-9 bg-gradient-to-br from-violet-500 to-indigo-600 rounded-xl flex items-center justify-center text-white text-sm font-bold shadow-lg">6</span>
     <h2 class="text-2xl font-bold text-slate-900">Gate Check 门控机制</h2>
   </div>
-  <div class="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 overflow-x-auto">
+  <div class="glass-card p-6 sm:p-8 overflow-x-auto" style="--card-accent-from:#8b5cf6;--card-accent-to:#6366f1">
     <div class="min-w-[600px] space-y-3">
-      <div class="border border-slate-200 rounded-xl p-4 bg-slate-50">
+      <div class="glass-card p-4 bg-slate-50/50" style="transform:none">
         <div class="flex items-center gap-3 mb-2"><span class="px-2.5 py-1 bg-accent-green text-white text-xs font-bold rounded-lg">Stage 0</span><span class="text-xs text-slate-500">PC 派遣 KC → 产出 CODE_KNOWLEDGE.md</span></div>
         <div class="ml-8 flex items-center gap-3 flex-wrap">
-          <div class="bg-violet-100 border border-violet-300 rounded-lg px-3 py-1.5"><span class="text-xs font-bold text-violet-700">Gate0</span></div>
-          <span class="px-2 py-0.5 bg-green-100 text-green-700 text-[10px] font-medium rounded">Pass0 → Stage 1</span>
-          <span class="px-2 py-0.5 bg-red-100 text-red-700 text-[10px] font-medium rounded">Fail0 → 退回 KC</span>
+          <div class="bg-violet-100/80 backdrop-blur border border-violet-300 rounded-lg px-3 py-1.5"><span class="text-xs font-bold text-violet-700">Gate0</span></div>
+          <span class="px-2 py-0.5 bg-green-100/80 text-green-700 text-[10px] font-medium rounded">Pass0 → Stage 1</span>
+          <span class="px-2 py-0.5 bg-red-100/80 text-red-700 text-[10px] font-medium rounded">Fail0 → 退回 KC</span>
         </div>
       </div>
-      <div class="border border-slate-200 rounded-xl p-4 bg-slate-50">
+      <div class="glass-card p-4 bg-slate-50/50" style="transform:none">
         <div class="flex items-center gap-3 mb-2"><span class="px-2.5 py-1 bg-accent-green text-white text-xs font-bold rounded-lg">Stage 1</span><span class="text-xs text-slate-500">PC 派遣 RC → 产出 DRAFT_SPEC.md</span></div>
         <div class="ml-8 flex items-center gap-3 flex-wrap">
-          <div class="bg-violet-100 border border-violet-300 rounded-lg px-3 py-1.5"><span class="text-xs font-bold text-violet-700">Gate1</span></div>
-          <span class="px-2 py-0.5 bg-green-100 text-green-700 text-[10px] font-medium rounded">Pass1 → Stage 2</span>
-          <span class="px-2 py-0.5 bg-red-100 text-red-700 text-[10px] font-medium rounded">Fail1 → 退回 RC</span>
+          <div class="bg-violet-100/80 backdrop-blur border border-violet-300 rounded-lg px-3 py-1.5"><span class="text-xs font-bold text-violet-700">Gate1</span></div>
+          <span class="px-2 py-0.5 bg-green-100/80 text-green-700 text-[10px] font-medium rounded">Pass1 → Stage 2</span>
+          <span class="px-2 py-0.5 bg-red-100/80 text-red-700 text-[10px] font-medium rounded">Fail1 → 退回 RC</span>
         </div>
       </div>
-      <div class="border border-slate-200 rounded-xl p-4 bg-slate-50">
+      <div class="glass-card p-4 bg-slate-50/50" style="transform:none">
         <div class="flex items-center gap-3 mb-2"><span class="px-2.5 py-1 bg-accent-green text-white text-xs font-bold rounded-lg">Stage 2</span><span class="text-xs text-slate-500">PC 派遣 SD → 产出 TECHNICAL_SPEC.md + feature/*.md</span></div>
         <div class="ml-8 flex items-center gap-3 flex-wrap">
-          <div class="bg-violet-100 border border-violet-300 rounded-lg px-3 py-1.5"><span class="text-xs font-bold text-violet-700">Gate2</span></div>
-          <span class="px-2 py-0.5 bg-green-100 text-green-700 text-[10px] font-medium rounded">Pass2 → Stage 3</span>
-          <span class="px-2 py-0.5 bg-red-100 text-red-700 text-[10px] font-medium rounded">Fail2 → 退回 SD</span>
+          <div class="bg-violet-100/80 backdrop-blur border border-violet-300 rounded-lg px-3 py-1.5"><span class="text-xs font-bold text-violet-700">Gate2</span></div>
+          <span class="px-2 py-0.5 bg-green-100/80 text-green-700 text-[10px] font-medium rounded">Pass2 → Stage 3</span>
+          <span class="px-2 py-0.5 bg-red-100/80 text-red-700 text-[10px] font-medium rounded">Fail2 → 退回 SD</span>
         </div>
       </div>
-      <div class="border border-slate-200 rounded-xl p-4 bg-slate-50">
+      <div class="glass-card p-4 bg-slate-50/50" style="transform:none">
         <div class="flex items-center gap-3 mb-2"><span class="px-2.5 py-1 bg-accent-amber text-white text-xs font-bold rounded-lg">Stage 3</span><span class="text-xs text-slate-500">PC 派遣 CD → 编码实现 + VER 独立验证</span></div>
         <div class="ml-8 flex items-center gap-3 flex-wrap">
-          <div class="bg-violet-100 border border-violet-300 rounded-lg px-3 py-1.5"><span class="text-xs font-bold text-violet-700">Gate3</span></div>
-          <span class="px-2 py-0.5 bg-green-100 text-green-700 text-[10px] font-medium rounded">Pass3 → Stage 3.5</span>
-          <span class="px-2 py-0.5 bg-red-100 text-red-700 text-[10px] font-medium rounded">Fail3 → 退回 CD</span>
+          <div class="bg-violet-100/80 backdrop-blur border border-violet-300 rounded-lg px-3 py-1.5"><span class="text-xs font-bold text-violet-700">Gate3</span></div>
+          <span class="px-2 py-0.5 bg-green-100/80 text-green-700 text-[10px] font-medium rounded">Pass3 → Stage 3.5</span>
+          <span class="px-2 py-0.5 bg-red-100/80 text-red-700 text-[10px] font-medium rounded">Fail3 → 退回 CD</span>
         </div>
       </div>
-      <div class="border border-slate-200 rounded-xl p-4 bg-slate-50">
+      <div class="glass-card p-4 bg-slate-50/50" style="transform:none">
         <div class="flex items-center gap-3 mb-2"><span class="px-2.5 py-1 bg-accent-crimson text-white text-xs font-bold rounded-lg">Stage 3.5</span><span class="text-xs text-slate-500">模板审计 → 扫描临时接口 → 审计报告</span></div>
         <div class="ml-8 flex items-center gap-3 flex-wrap">
-          <div class="bg-violet-100 border border-violet-300 rounded-lg px-3 py-1.5"><span class="text-xs font-bold text-violet-700">Gate35</span></div>
-          <span class="px-2 py-0.5 bg-green-100 text-green-700 text-[10px] font-medium rounded">Pass35 → Stage 4</span>
-          <span class="px-2 py-0.5 bg-red-100 text-red-700 text-[10px] font-medium rounded">Fail35 → 退回 CD 替换</span>
+          <div class="bg-violet-100/80 backdrop-blur border border-violet-300 rounded-lg px-3 py-1.5"><span class="text-xs font-bold text-violet-700">Gate35</span></div>
+          <span class="px-2 py-0.5 bg-green-100/80 text-green-700 text-[10px] font-medium rounded">Pass35 → Stage 4</span>
+          <span class="px-2 py-0.5 bg-red-100/80 text-red-700 text-[10px] font-medium rounded">Fail35 → 退回 CD 替换</span>
         </div>
       </div>
-      <div class="border border-slate-200 rounded-xl p-4 bg-slate-50">
+      <div class="glass-card p-4 bg-slate-50/50" style="transform:none">
         <div class="flex items-center gap-3 mb-2"><span class="px-2.5 py-1 bg-accent-rose text-white text-xs font-bold rounded-lg">Stage 4</span><span class="text-xs text-slate-500">QA 审核 → 规范符合 + 代码质量</span></div>
         <div class="ml-8 flex items-center gap-3 flex-wrap">
-          <div class="bg-violet-100 border border-violet-300 rounded-lg px-3 py-1.5"><span class="text-xs font-bold text-violet-700">Gate4</span></div>
-          <span class="px-2 py-0.5 bg-green-100 text-green-700 text-[10px] font-medium rounded">Pass4 → Stage 5 收尾</span>
-          <span class="px-2 py-0.5 bg-red-100 text-red-700 text-[10px] font-medium rounded">Fail4 → 退回 CD 修复</span>
+          <div class="bg-violet-100/80 backdrop-blur border border-violet-300 rounded-lg px-3 py-1.5"><span class="text-xs font-bold text-violet-700">Gate4</span></div>
+          <span class="px-2 py-0.5 bg-green-100/80 text-green-700 text-[10px] font-medium rounded">Pass4 → Stage 5 收尾</span>
+          <span class="px-2 py-0.5 bg-red-100/80 text-red-700 text-[10px] font-medium rounded">Fail4 → 退回 CD 修复</span>
         </div>
       </div>
-      <div class="border border-slate-200 rounded-xl p-4 bg-green-50">
+      <div class="glass-card p-4 bg-green-50/50" style="transform:none">
         <div class="flex items-center gap-3"><span class="px-2.5 py-1 bg-accent-blue text-white text-xs font-bold rounded-lg">Stage 5</span><span class="text-xs text-slate-500">漂移检测 → 文档对齐 → 代码提交</span></div>
         <div class="ml-8 mt-2"><span class="px-3 py-1 bg-green-600 text-white text-xs font-bold rounded-lg shadow">交付用户</span></div>
       </div>
@@ -578,12 +735,12 @@ sequenceDiagram
 </section>
 
 <!-- ============ 7. ACP PROTOCOL ============ -->
-<section class="fade-in">
+<section class="reveal-section">
   <div class="flex items-center gap-3 mb-8">
     <span class="w-9 h-9 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-xl flex items-center justify-center text-white text-sm font-bold shadow-lg">7</span>
     <h2 class="text-2xl font-bold text-slate-900">ACP 通信协议</h2>
   </div>
-  <div class="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8">
+  <div class="glass-card p-6 sm:p-8" style="--card-accent-from:#10b981;--card-accent-to:#14b8a6">
     <p class="text-sm text-slate-600 mb-6">所有 Agent 间交互遵循 <strong class="text-slate-900">ACP v1.1</strong> 协议，消息格式如下：</p>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
       <!-- Message Structure -->
@@ -612,12 +769,12 @@ sequenceDiagram
 </section>
 
 <!-- ============ 8. FILE STRUCTURE ============ -->
-<section class="fade-in">
+<section class="reveal-section">
   <div class="flex items-center gap-3 mb-8">
     <span class="w-9 h-9 bg-gradient-to-br from-slate-600 to-slate-800 rounded-xl flex items-center justify-center text-white text-sm font-bold shadow-lg">8</span>
     <h2 class="text-2xl font-bold text-slate-900">文件结构</h2>
   </div>
-  <div class="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 overflow-x-auto">
+  <div class="glass-card p-6 sm:p-8 overflow-x-auto" style="--card-accent-from:#475569;--card-accent-to:#334155">
     <pre class="text-xs font-code text-slate-700 leading-relaxed"><code>.claude/
 ├── <span class="text-accent-red font-bold">agents/</span>                    <span class="text-slate-400"># 执行层 Agent 定义</span>
 │   ├── project-coordinator.md    <span class="text-slate-400"># 编排层 · 总控</span>
@@ -660,27 +817,27 @@ sequenceDiagram
 </section>
 
 <!-- ============ 9. DESIGN DECISIONS ============ -->
-<section class="fade-in">
+<section class="reveal-section">
   <div class="flex items-center gap-3 mb-8">
     <span class="w-9 h-9 bg-gradient-to-br from-amber-500 to-orange-600 rounded-xl flex items-center justify-center text-white text-sm font-bold shadow-lg">9</span>
     <h2 class="text-2xl font-bold text-slate-900">设计决策记录</h2>
   </div>
-  <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden">
+  <div class="glass-card overflow-hidden" style="--card-accent-from:#f59e0b;--card-accent-to:#f97316">
     <div class="overflow-x-auto">
       <table class="w-full text-sm">
-        <thead><tr class="bg-slate-50 border-b border-slate-200">
+        <thead><tr class="bg-slate-50/80 backdrop-blur border-b border-slate-200">
           <th class="text-left px-6 py-3 text-xs font-semibold text-slate-500 uppercase">决策</th>
           <th class="text-left px-6 py-3 text-xs font-semibold text-slate-500 uppercase">原因</th>
         </tr></thead>
         <tbody class="divide-y divide-slate-100">
-          <tr class="hover:bg-slate-50"><td class="px-6 py-3 font-medium text-slate-900">三层分离</td><td class="px-6 py-3 text-slate-600">消除 Agent 与 Skill 的重复，职责单一</td></tr>
-          <tr class="hover:bg-slate-50"><td class="px-6 py-3 font-medium text-slate-900">Skill 只含方法</td><td class="px-6 py-3 text-slate-600">Agent 负责执行，Skill 负责知识，互不侵入</td></tr>
-          <tr class="hover:bg-slate-50"><td class="px-6 py-3 font-medium text-slate-900">Gate Check 强制</td><td class="px-6 py-3 text-slate-600">每阶段质量可控，问题早发现早修复</td></tr>
-          <tr class="hover:bg-slate-50"><td class="px-6 py-3 font-medium text-slate-900">单点推进</td><td class="px-6 py-3 text-slate-600">需求/方案阶段避免批量确认导致的遗漏</td></tr>
-          <tr class="hover:bg-slate-50"><td class="px-6 py-3 font-medium text-slate-900">ACP 协议标准化</td><td class="px-6 py-3 text-slate-600">Agent 通信可追溯、可审计</td></tr>
-          <tr class="hover:bg-slate-50"><td class="px-6 py-3 font-medium text-slate-900">Headless 绝对强制</td><td class="px-6 py-3 text-slate-600">所有组件 Logic + View 分离，内联样式零容忍</td></tr>
-          <tr class="hover:bg-slate-50"><td class="px-6 py-3 font-medium text-slate-900">后端代码前置</td><td class="px-6 py-3 text-slate-600">方案设计基于后端实际实现，减少前后端不一致</td></tr>
-          <tr class="hover:bg-slate-50"><td class="px-6 py-3 font-medium text-slate-900">检查脚本独立</td><td class="px-6 py-3 text-slate-600">可复用、可维护、不嵌入 Agent/Skill 文档</td></tr>
+          <tr class="hover:bg-slate-50/60 transition-colors"><td class="px-6 py-3 font-medium text-slate-900">三层分离</td><td class="px-6 py-3 text-slate-600">消除 Agent 与 Skill 的重复，职责单一</td></tr>
+          <tr class="hover:bg-slate-50/60 transition-colors"><td class="px-6 py-3 font-medium text-slate-900">Skill 只含方法</td><td class="px-6 py-3 text-slate-600">Agent 负责执行，Skill 负责知识，互不侵入</td></tr>
+          <tr class="hover:bg-slate-50/60 transition-colors"><td class="px-6 py-3 font-medium text-slate-900">Gate Check 强制</td><td class="px-6 py-3 text-slate-600">每阶段质量可控，问题早发现早修复</td></tr>
+          <tr class="hover:bg-slate-50/60 transition-colors"><td class="px-6 py-3 font-medium text-slate-900">单点推进</td><td class="px-6 py-3 text-slate-600">需求/方案阶段避免批量确认导致的遗漏</td></tr>
+          <tr class="hover:bg-slate-50/60 transition-colors"><td class="px-6 py-3 font-medium text-slate-900">ACP 协议标准化</td><td class="px-6 py-3 text-slate-600">Agent 通信可追溯、可审计</td></tr>
+          <tr class="hover:bg-slate-50/60 transition-colors"><td class="px-6 py-3 font-medium text-slate-900">Headless 绝对强制</td><td class="px-6 py-3 text-slate-600">所有组件 Logic + View 分离，内联样式零容忍</td></tr>
+          <tr class="hover:bg-slate-50/60 transition-colors"><td class="px-6 py-3 font-medium text-slate-900">后端代码前置</td><td class="px-6 py-3 text-slate-600">方案设计基于后端实际实现，减少前后端不一致</td></tr>
+          <tr class="hover:bg-slate-50/60 transition-colors"><td class="px-6 py-3 font-medium text-slate-900">检查脚本独立</td><td class="px-6 py-3 text-slate-600">可复用、可维护、不嵌入 Agent/Skill 文档</td></tr>
         </tbody>
       </table>
     </div>
@@ -698,8 +855,29 @@ sequenceDiagram
   </div>
 </div>
 
+<!-- ============================================================
+     Scroll Reveal & Zoom Scripts
+     ============================================================ -->
 <script>
 (function(){
+  /* ── Scroll Reveal (from resume) ── */
+  const sections = document.querySelectorAll('.reveal-section');
+  sections.forEach((section, i) => {
+    section.style.transitionDelay = `${i * 0.06}s`;
+  });
+
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+  sections.forEach(section => revealObserver.observe(section));
+
+  /* ── Mermaid Zoom ── */
   const modal = document.getElementById('zoom-modal');
   const target = document.getElementById('zoom-target');
   let scale = 1, startX, startY, scrollLeft, scrollTop, isDragging = false;
@@ -758,7 +936,7 @@ sequenceDiagram
 })();
 </script>
 
-<footer class="border-t border-slate-200 mt-16 py-6 bg-white">
+<footer class="border-t border-slate-200 mt-16 py-6 bg-white/80 backdrop-blur">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-xs text-slate-400">
     MBSE 多智能体开发架构 v2.0 · 2026-05-29
   </div>
