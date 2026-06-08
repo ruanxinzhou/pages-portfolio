@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 开发核心概念图解</title>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<style>
+  :root {
+    --bg: #0f172a;
+    --card: #1e293b;
+    --border: #334155;
+    --text: #e2e8f0;
+    --accent: #38bdf8;
+    --accent2: #a78bfa;
+    --accent3: #34d399;
+    --accent4: #fb923c;
+    --accent5: #f472b6;
+    --accent6: #facc15;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Noto Sans SC', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.8;
+    padding: 40px 20px;
+  }
+  .container { max-width: 1100px; margin: 0 auto; }
+  h1 {
+    text-align: center;
+    font-size: 2em;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 10px;
+  }
+  .subtitle {
+    text-align: center;
+    color: #94a3b8;
+    margin-bottom: 40px;
+    font-size: 1.05em;
+  }
+
+  /* ---- 概念卡片 ---- */
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 20px;
+    margin-bottom: 50px;
+  }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px;
+    transition: transform .2s, box-shadow .2s;
+  }
+  .card:hover { transform: translateY(-4px); box-shadow: 0 8px 30px rgba(0,0,0,.35); }
+  .card-icon { font-size: 2em; margin-bottom: 8px; }
+  .card h3 { font-size: 1.2em; margin-bottom: 6px; }
+  .card p { font-size: .95em; color: #cbd5e1; }
+  .card .tag {
+    display: inline-block;
+    font-size: .75em;
+    padding: 2px 10px;
+    border-radius: 20px;
+    margin-top: 10px;
+    font-weight: 600;
+  }
+  .tag-vibe  { background: rgba(56,189,248,.15); color: var(--accent); }
+  .tag-agent { background: rgba(167,139,250,.15); color: var(--accent2); }
+  .tag-skill { background: rgba(52,211,153,.15); color: var(--accent3); }
+  .tag-mcp   { background: rgba(251,146,60,.15); color: var(--accent4); }
+  .tag-cli   { background: rgba(244,114,182,.15); color: var(--accent5); }
+  .tag-tools { background: rgba(250,204,21,.15); color: var(--accent6); }
+
+  /* ---- Mermaid 图表区 ---- */
+  .diagram-section { margin-bottom: 50px; }
+  .diagram-section h2 {
+    font-size: 1.4em;
+    margin-bottom: 20px;
+    padding-left: 14px;
+    border-left: 4px solid var(--accent2);
+  }
+  .mermaid-wrapper {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 30px 20px;
+    overflow-x: auto;
+  }
+  .mermaid svg { max-width: 100%; height: auto; }
+
+  /* ---- 一句话总结 ---- */
+  .summary {
+    text-align: center;
+    font-size: 1.15em;
+    padding: 28px;
+    background: linear-gradient(135deg, rgba(56,189,248,.08), rgba(167,139,250,.08));
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    margin-bottom: 30px;
+  }
+  .summary strong { color: var(--accent); }
+</style>
+</head>
+<body>
+<div class="container">
+
+<h1>🧠 AI 开发核心概念图解</h1>
+<p class="subtitle">Vibe Coding · Agent · SKILL · MCP · CLI · Tools — 一页搞懂</p>
+
+<!-- ============ 概念卡片 ============ -->
+<div class="cards">
+
+  <div class="card">
+    <div class="card-icon">🎸</div>
+    <h3 style="color:var(--accent)">Vibe Coding（氛围编程）</h3>
+    <p>用<strong>自然语言描述意图</strong>，AI 帮你写代码。你负责"调方向"，AI 负责"写代码和改 Bug"。</p>
+    <p style="margin-top:6px;color:#94a3b8;font-size:.9em">💡 例：你说"帮我写一个读取飞书文档的 Python 脚本"，AI 直接生成代码。</p>
+    <span class="tag tag-vibe">理念 / 新范式</span>
+  </div>
+
+  <div class="card">
+    <div class="card-icon">🤖</div>
+    <h3 style="color:var(--accent2)">Agent（智能体）</h3>
+    <p>能<strong>自主规划并执行任务</strong>的 AI。理解目标 → 拆解步骤 → 调用工具 → 检查修正，全程无需你一步步指挥。</p>
+    <p style="margin-top:6px;color:#94a3b8;font-size:.9em">💡 例：你说"帮我把 GitHub 上的代码部署到服务器"，Agent 自己：拉代码 → 检查依赖 → 打包 → 部署。</p>
+    <span class="tag tag-agent">执行者</span>
+  </div>
+
+  <div class="card">
+    <div class="card-icon">🧩</div>
+    <h3 style="color:var(--accent3)">SKILL（技能）</h3>
+    <p>预封装的<strong>"专业能力包"</strong>。装了 pptx 技能，Agent 就知道做 PPT 的最佳实践；用哪个装哪个。</p>
+    <p style="margin-top:6px;color:#94a3b8;font-size:.9em">💡 例：装了 <code>lark-doc</code> 技能后，Agent 就知道如何正确调用飞书文档 API 来创建和编辑文档。</p>
+    <span class="tag tag-skill">专业知识</span>
+  </div>
+
+  <div class="card">
+    <div class="card-icon">🔌</div>
+    <h3 style="color:var(--accent4)">MCP（Model Context Protocol）</h3>
+    <p>AI 与外部系统之间的<strong>"标准接口协议"</strong>。就像 USB 接口，让 AI 能标准化地对接各种外部服务。</p>
+    <p style="margin-top:6px;color:#94a3b8;font-size:.9em">💡 例：通过飞书 MCP，AI 能直接帮你<strong>发消息、读文档、建日程</strong>；通过 GitHub MCP，能<strong>创建 PR、查看 Issue</strong>。</p>
+    <span class="tag tag-mcp">连接协议</span>
+  </div>
+
+  <div class="card">
+    <div class="card-icon">⌨️</div>
+    <h3 style="color:var(--accent5)">CLI（命令行界面）</h3>
+    <p>通过<strong>文字命令</strong>操作工具的方式，没有图形界面。AI Agent 可以代替你敲命令，你只需说意图。</p>
+    <p style="margin-top:6px;color:#94a3b8;font-size:.9em">💡 例：你说"部署项目"，Agent 在后台执行 <code>git push</code>、<code>docker build</code>、<code>npm install</code> 等命令。</p>
+    <span class="tag tag-cli">交互方式</span>
+  </div>
+
+  <div class="card">
+    <div class="card-icon">🔧</div>
+    <h3 style="color:var(--accent6)">Tools（工具）</h3>
+    <p>Agent 可以调用的<strong>"具体能力单元"</strong>：读文件、写文件、搜索代码、执行命令……没有 Tools，Agent 只能说不能做。</p>
+    <p style="margin-top:6px;color:#94a3b8;font-size:.9em">💡 例：<code>Read</code> 工具读取本地配置文件，<code>WebSearch</code> 搜索 API 文档，<code>RunCommand</code> 执行数据库迁移脚本。</p>
+    <span class="tag tag-tools">执行手段</span>
+  </div>
+
+</div>
+
+<!-- ============ 图表 1：整体关系 ============ -->
+<div class="diagram-section">
+  <h2>🗺️ 概念关系全景图</h2>
+  <div class="mermaid-wrapper">
+    <pre class="mermaid">
+flowchart TB
+    subgraph 理念层
+        VC["🎸 Vibe Coding<br/><i>你说意图，AI 干活</i>"]
+    end
+
+    subgraph 执行层
+        AG["🤖 Agent<br/><i>自主规划与执行</i>"]
+        SK["🧩 SKILL<br/><i>专业能力包</i>"]
+        TL["🔧 Tools<br/><i>具体能力单元</i>"]
+    end
+
+    subgraph 连接层
+        MCP["🔌 MCP<br/><i>标准接口协议</i>"]
+        CLI["⌨️ CLI<br/><i>命令行交互</i>"]
+    end
+
+    subgraph 外部世界
+        FS["📁 飞书 / GitHub<br/>数据库 / API"]
+    end
+
+    VC -->|"驱动"| AG
+    AG -->|"加载"| SK
+    SK -->|"指导调用"| TL
+    AG -->|"直接调用"| TL
+    MCP -->|"连接"| FS
+    AG -->|"通过 MCP 访问"| MCP
+    AG -->|"通过 CLI 执行"| CLI
+    CLI -->|"操作"| FS
+
+    style VC fill:#0ea5e922,stroke:#0ea5e9,stroke-width:2px,color:#e2e8f0
+    style AG fill:#8b5cf622,stroke:#8b5cf6,stroke-width:2px,color:#e2e8f0
+    style SK fill:#34d39922,stroke:#34d399,stroke-width:2px,color:#e2e8f0
+    style TL fill:#facc1522,stroke:#facc15,stroke-width:2px,color:#e2e8f0
+    style MCP fill:#fb923c22,stroke:#fb923c,stroke-width:2px,color:#e2e8f0
+    style CLI fill:#f472b622,stroke:#f472b6,stroke-width:2px,color:#e2e8f0
+    style FS fill:#47556922,stroke:#475569,stroke-width:1px,color:#94a3b8
+    </pre>
+  </div>
+</div>
+
+<!-- ============ 图表 2：Agent 工作流 ============ -->
+<div class="diagram-section">
+  <h2>🔄 Agent 工作流程</h2>
+  <div class="mermaid-wrapper">
+    <pre class="mermaid">
+sequenceDiagram
+    participant U as 👤 用户
+    participant A as 🤖 Agent
+    participant S as 🧩 SKILL
+    participant T as 🔧 Tools
+    participant M as 🔌 MCP
+
+    U->>A: 用自然语言描述需求
+    A->>A: 理解目标 &amp; 规划步骤
+    A->>S: 加载相关 SKILL（获取专业知识）
+    S-->>A: 返回最佳实践 / 操作手册
+    A->>T: 调用 Tools（读文件 / 搜索 / 写代码）
+    T-->>A: 返回执行结果
+    A->>M: 需要外部数据时，通过 MCP 连接
+    M-->>A: 返回外部系统数据
+    A->>A: 检查结果 &amp; 自我修正
+    A->>T: 调用 Tools 生成最终产物
+    T-->>A: 产出文件 / 代码 / 报告
+    A-->>U: ✅ 交付结果
+    U->>A: 反馈 &amp; 迭代（可选）
+    </pre>
+  </div>
+</div>
+
+<!-- ============ 图表 3：类比图 ============ -->
+<div class="diagram-section">
+  <h2>🏢 一个类比：AI 开发团队</h2>
+  <div class="mermaid-wrapper">
+    <pre class="mermaid">
+flowchart LR
+    subgraph 老板["👤 你（老板）"]
+        BOSS["提需求、看效果"]
+    end
+
+    subgraph AI开发团队["🤖 AI 开发团队"]
+        PM["🤖 Agent<br/><i>项目经理：拆任务、盯进度</i>"]
+        EXP["🧩 SKILL<br/><i>领域专家：教方法</i>"]
+        ENG["🔧 Tools<br/><i>工程师：动手干活</i>"]
+        OPS["⌨️ CLI<br/><i>运维：敲命令部署</i>"]
+    end
+
+    subgraph 外部合作方["🏢 外部合作方"]
+        CABLE["🔌 MCP<br/><i>标准合同：对接外部公司</i>"]
+        FEISHU["💬 飞书<br/><i>沟通协作平台</i>"]
+        GITHUB["🐙 GitHub<br/><i>代码托管平台</i>"]
+        DBAPI["🗄️ 数据库 / API<br/><i>数据与服务</i>"]
+    end
+
+    BOSS -->|"Vibe Coding<br/>氛围沟通"| PM
+    PM -->|"请教方法"| EXP
+    PM -->|"派活"| ENG
+    PM -->|"部署上线"| OPS
+    PM -->|"签合同对接"| CABLE
+    CABLE -->|"连接"| FEISHU
+    CABLE -->|"连接"| GITHUB
+    CABLE -->|"连接"| DBAPI
+
+    style BOSS fill:#0ea5e922,stroke:#0ea5e9,stroke-width:2px,color:#e2e8f0
+    style PM fill:#8b5cf622,stroke:#8b5cf6,stroke-width:2px,color:#e2e8f0
+    style EXP fill:#34d39922,stroke:#34d399,stroke-width:2px,color:#e2e8f0
+    style ENG fill:#facc1522,stroke:#facc15,stroke-width:2px,color:#e2e8f0
+    style OPS fill:#f472b622,stroke:#f472b6,stroke-width:2px,color:#e2e8f0
+    style CABLE fill:#fb923c22,stroke:#fb923c,stroke-width:2px,color:#e2e8f0
+    style FEISHU fill:#0ea5e922,stroke:#0ea5e9,stroke-width:1px,color:#e2e8f0
+    style GITHUB fill:#8b5cf622,stroke:#8b5cf6,stroke-width:1px,color:#e2e8f0
+    style DBAPI fill:#34d39922,stroke:#34d399,stroke-width:1px,color:#e2e8f0
+    </pre>
+  </div>
+</div>
+
+<!-- ============ 图表 4：分层架构 ============ -->
+<div class="diagram-section">
+  <h2>📚 分层架构图</h2>
+  <div class="mermaid-wrapper">
+    <pre class="mermaid">
+flowchart TB
+    L1["🎸 <b>Vibe Coding</b> — 理念：用自然语言驱动开发"]
+    L2["🤖 <b>Agent</b> — 大脑：理解、规划、决策、纠错"]
+    L3["🧩 <b>SKILL</b> — 知识：领域最佳实践与操作规范"]
+    L4["🔧 <b>Tools</b> + ⌨️ <b>CLI</b> — 手脚：读写文件、执行命令、搜索"]
+    L5["🔌 <b>MCP</b> — 桥梁：标准化连接外部系统"]
+    L6["🏢 <b>外部世界</b> — 飞书、GitHub、数据库、API..."]
+
+    L1 --- L2 --- L3 --- L4 --- L5 --- L6
+
+    style L1 fill:#0ea5e933,stroke:#0ea5e9,stroke-width:2px,color:#e2e8f0
+    style L2 fill:#8b5cf633,stroke:#8b5cf6,stroke-width:2px,color:#e2e8f0
+    style L3 fill:#34d39933,stroke:#34d399,stroke-width:2px,color:#e2e8f0
+    style L4 fill:#facc1533,stroke:#facc15,stroke-width:2px,color:#e2e8f0
+    style L5 fill:#fb923c33,stroke:#fb923c,stroke-width:2px,color:#e2e8f0
+    style L6 fill:#47556933,stroke:#475569,stroke-width:1px,color:#94a3b8
+    </pre>
+  </div>
+</div>
+
+<!-- ============ 一句话总结 ============ -->
+<div class="summary">
+    <strong>Vibe Coding</strong> 是理念 → <strong>Agent</strong> 是执行者 → <strong>SKILL</strong> 赋予它专业能力 → <strong>MCP</strong> 连接外部世界 → <strong>CLI</strong> 和 <strong>Tools</strong> 是它干活的手段。
+</div>
+
+</div>
+
+<script>
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'dark',
+    themeVariables: {
+      primaryColor: '#1e293b',
+      primaryTextColor: '#e2e8f0',
+      primaryBorderColor: '#334155',
+      lineColor: '#64748b',
+      secondaryColor: '#0f172a',
+      tertiaryColor: '#1e293b',
+      fontFamily: '-apple-system, BlinkMacSystemFont, Segoe UI, PingFang SC, Noto Sans SC, sans-serif'
+    },
+    flowchart: { curve: 'basis', padding: 20 },
+    sequence: { mirrorActors: false }
+  });
+</script>
+</body>
+</html>
