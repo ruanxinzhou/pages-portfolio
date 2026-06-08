@@ -676,6 +676,18 @@ flowchart TB
 
   /* ── Scroll Reveal (from resume) ── */
   (function(){
+    // Check if in iframe
+    const isIframe = window.self !== window.top;
+
+    // If in iframe, show all content immediately
+    if (isIframe) {
+      document.querySelectorAll('.reveal-section, .reveal-card').forEach(el => {
+        el.classList.add('visible');
+        el.style.transitionDelay = '0s';
+      });
+      return;
+    }
+
     // Section-level reveal
     const sections = document.querySelectorAll('.reveal-section');
     const sectionObserver = new IntersectionObserver((entries) => {
